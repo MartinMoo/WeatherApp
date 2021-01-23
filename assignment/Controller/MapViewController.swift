@@ -1,18 +1,18 @@
 //
-//  ViewController.swift
+//  MapViewController.swift
 //  assignment
 //
-//  Created by Moo Maa on 22/01/2021.
+//  Created by Martin Miklas on 22/01/2021.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.view.backgroundColor = .black
+        self.view.backgroundColor = .systemBackground
     }
 }
 

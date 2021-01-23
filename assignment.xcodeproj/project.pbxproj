@@ -9,21 +9,29 @@
 /* Begin PBXBuildFile section */
 		F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEB25BB55F100757AEF /* AppDelegate.swift */; };
 		F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DED25BB55F100757AEF /* SceneDelegate.swift */; };
-		F3B28DF025BB55F100757AEF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEF25BB55F100757AEF /* ViewController.swift */; };
+		F3B28DF025BB55F100757AEF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEF25BB55F100757AEF /* MapViewController.swift */; };
 		F3B28DF325BB55F100757AEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3B28DF125BB55F100757AEF /* Main.storyboard */; };
 		F3B28DF525BB55F400757AEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3B28DF425BB55F400757AEF /* Assets.xcassets */; };
 		F3B28DF825BB55F400757AEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3B28DF625BB55F400757AEF /* LaunchScreen.storyboard */; };
+		F3B28E0D25BC35C600757AEF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E0C25BC35C600757AEF /* TabBarController.swift */; };
+		F3B28E1025BC396300757AEF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E0F25BC396300757AEF /* SearchViewController.swift */; };
+		F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */; };
+		F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1625BC418F00757AEF /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F3B28DE825BB55F100757AEF /* assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B28DEB25BB55F100757AEF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3B28DED25BB55F100757AEF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F3B28DEF25BB55F100757AEF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F3B28DEF25BB55F100757AEF /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F3B28DF225BB55F100757AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F3B28DF425BB55F400757AEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3B28DF725BB55F400757AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F3B28DF925BB55F400757AEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3B28E0C25BC35C600757AEF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		F3B28E0F25BC396300757AEF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		F3B28E1625BC418F00757AEF /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +64,51 @@
 		F3B28DEA25BB55F100757AEF /* assignment */ = {
 			isa = PBXGroup;
 			children = (
+				F3B28E1525BC417700757AEF /* Extension */,
+				F3B28E0A25BC34E800757AEF /* Controller */,
+				F3B28E0925BC34E300757AEF /* View */,
+				F3B28E0825BC34D500757AEF /* Model */,
 				F3B28DEB25BB55F100757AEF /* AppDelegate.swift */,
 				F3B28DED25BB55F100757AEF /* SceneDelegate.swift */,
-				F3B28DEF25BB55F100757AEF /* ViewController.swift */,
 				F3B28DF125BB55F100757AEF /* Main.storyboard */,
 				F3B28DF425BB55F400757AEF /* Assets.xcassets */,
 				F3B28DF625BB55F400757AEF /* LaunchScreen.storyboard */,
 				F3B28DF925BB55F400757AEF /* Info.plist */,
 			);
 			path = assignment;
+			sourceTree = "<group>";
+		};
+		F3B28E0825BC34D500757AEF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F3B28E0925BC34E300757AEF /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3B28E0A25BC34E800757AEF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F3B28DEF25BB55F100757AEF /* MapViewController.swift */,
+				F3B28E0C25BC35C600757AEF /* TabBarController.swift */,
+				F3B28E0F25BC396300757AEF /* SearchViewController.swift */,
+				F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F3B28E1525BC417700757AEF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F3B28E1625BC418F00757AEF /* ColorExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +181,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3B28DF025BB55F100757AEF /* ViewController.swift in Sources */,
+				F3B28E1025BC396300757AEF /* SearchViewController.swift in Sources */,
+				F3B28DF025BB55F100757AEF /* MapViewController.swift in Sources */,
+				F3B28E0D25BC35C600757AEF /* TabBarController.swift in Sources */,
 				F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */,
+				F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */,
+				F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */,
 				F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
