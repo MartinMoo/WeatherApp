@@ -11,15 +11,25 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // View controllers
+
+        // View Controllers
         let mapViewController = MapViewController()
         let searchViewController = SearchViewController()
         let favoritesViewController = FavoritesViewController()
-        let navController = UINavigationController()
-        navController.viewControllers = [mapViewController ]
-        let navAppearance = UINavigationBarAppearance()
         
+        // Nav Controllers
+        let navMapController = UINavigationController()
+        let navSearchController = UINavigationController()
+        let navFavoritesController = UINavigationController()
+        
+        navMapController.viewControllers = [mapViewController]
+        navSearchController.viewControllers = [searchViewController]
+        navFavoritesController.viewControllers = [favoritesViewController]
+
+        // View Controllers titles
+        searchViewController.title = "Search"
+        favoritesViewController.title = "Favorites"
+
         // Icons setup
         let mapSymbol = UIImage(systemName: "map")?.withTintColor(UIColor.Custom.gray!, renderingMode: .alwaysOriginal)
         let searchSymbol = UIImage(systemName: "magnifyingglass")?.withTintColor(UIColor.Custom.gray!, renderingMode: .alwaysOriginal)
@@ -31,7 +41,11 @@ class TabBarController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.Custom.purple!], for: .selected)
         
         // NavBar Setup
+        let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
+        
+        navSearchController.navigationBar.prefersLargeTitles = true
+        navFavoritesController.navigationBar.prefersLargeTitles = true
                
         UINavigationBar.appearance().standardAppearance = navAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
@@ -40,12 +54,11 @@ class TabBarController: UITabBarController {
         UINavigationBar.appearance().tintColor = UIColor.Custom.purple
         
         // TabBar items setup
-        navController.tabBarItem = UITabBarItem(title: "Map", image: mapSymbol, selectedImage: mapSymbol?.withTintColor(UIColor.Custom.purple!))
-        searchViewController.tabBarItem = UITabBarItem(title: "Search", image: searchSymbol, selectedImage: searchSymbol?.withTintColor(UIColor.Custom.purple!))
-        favoritesViewController.tabBarItem = UITabBarItem(title: "Favorites", image: starSymbol, selectedImage: starSymbol?.withTintColor(UIColor.Custom.purple!))
+        navMapController.tabBarItem = UITabBarItem(title: "Map", image: mapSymbol, selectedImage: mapSymbol?.withTintColor(UIColor.Custom.purple!))
+        navSearchController.tabBarItem = UITabBarItem(title: "Search", image: searchSymbol, selectedImage: searchSymbol?.withTintColor(UIColor.Custom.purple!))
+        navFavoritesController.tabBarItem = UITabBarItem(title: "Favorites", image: starSymbol, selectedImage: starSymbol?.withTintColor(UIColor.Custom.purple!))
 
-
-        let tabBarList = [navController,searchViewController,favoritesViewController]
+        let tabBarList = [navMapController,navSearchController,navFavoritesController]
         self.setViewControllers(tabBarList, animated: false)
         
         //TODO: Create method for badge
