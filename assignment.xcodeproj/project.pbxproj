@@ -17,6 +17,8 @@
 		F3B28E1025BC396300757AEF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E0F25BC396300757AEF /* SearchViewController.swift */; };
 		F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */; };
 		F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1625BC418F00757AEF /* ColorExtension.swift */; };
+		F3B28E1E25BC6AB200757AEF /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1D25BC6AB200757AEF /* LocationService.swift */; };
+		F3B28E2225BCCCEB00757AEF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E2125BCCCEB00757AEF /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		F3B28E0F25BC396300757AEF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		F3B28E1625BC418F00757AEF /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		F3B28E1D25BC6AB200757AEF /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		F3B28E2125BCCCEB00757AEF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 		F3B28DEA25BB55F100757AEF /* assignment */ = {
 			isa = PBXGroup;
 			children = (
+				F3B28E1C25BC6A9E00757AEF /* Service */,
 				F3B28E1525BC417700757AEF /* Extension */,
 				F3B28E0A25BC34E800757AEF /* Controller */,
 				F3B28E0925BC34E300757AEF /* View */,
@@ -99,6 +104,7 @@
 				F3B28E0C25BC35C600757AEF /* TabBarController.swift */,
 				F3B28E0F25BC396300757AEF /* SearchViewController.swift */,
 				F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */,
+				F3B28E2125BCCCEB00757AEF /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -109,6 +115,14 @@
 				F3B28E1625BC418F00757AEF /* ColorExtension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		F3B28E1C25BC6A9E00757AEF /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F3B28E1D25BC6AB200757AEF /* LocationService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,8 +195,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3B28E2225BCCCEB00757AEF /* DetailViewController.swift in Sources */,
 				F3B28E1025BC396300757AEF /* SearchViewController.swift in Sources */,
 				F3B28DF025BB55F100757AEF /* MapViewController.swift in Sources */,
+				F3B28E1E25BC6AB200757AEF /* LocationService.swift in Sources */,
 				F3B28E0D25BC35C600757AEF /* TabBarController.swift in Sources */,
 				F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */,
 				F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */,
