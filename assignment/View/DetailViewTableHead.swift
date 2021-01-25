@@ -7,16 +7,20 @@
 
 import UIKit
 
-class DetailViewTableHead: UITableViewHeaderFooterView {
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        setupUI()
-    }
+class DetailViewTableHead: UIView {
     
+    override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
+        if frame == .zero {
+            translatesAutoresizingMaskIntoConstraints = false
+        }
+        setupView()
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // Set content to labels
     var currentWeather: CurrentWeather? {
         didSet {
@@ -58,17 +62,9 @@ class DetailViewTableHead: UITableViewHeaderFooterView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    let myBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemBackground
-        return view
-    }()
  
-    fileprivate func setupUI() {
+    fileprivate func setupView() {
 
-        self.backgroundView = myBackgroundView
-        
         // Add subviews
         addSubview(cellView)
         cellView.addSubview(tempLabel)
