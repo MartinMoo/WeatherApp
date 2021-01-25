@@ -19,6 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = tabBarController
         window?.backgroundColor = .systemBackground
+//        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

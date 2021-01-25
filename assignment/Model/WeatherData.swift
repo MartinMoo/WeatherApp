@@ -2,23 +2,34 @@
 //  WeatherData.swift
 //  assignment
 //
-//  Created by Martin Miklas on 22/01/2021.
+//  Created by Martin Miklas on 24/01/2021.
 //
 
 import Foundation
 
 struct WeatherData: Codable {
-    let name: String
-    let main: Main
-    let weather: [Weather]
+    let current: Current
+    let daily: [Daily]
 }
 
-struct Main: Codable {
+struct Current: Codable {
     let temp: Double
     let feels_like: Double
+    let weather: [Weather]
 }
 
 struct Weather: Codable {
     let description: String
     let id: Int
+}
+
+struct Daily: Codable {
+    let dt: Double
+    let humidity: Int
+    let temp: Temp
+    let weather: [Weather]
+}
+
+struct Temp: Codable {
+    let day: Double
 }

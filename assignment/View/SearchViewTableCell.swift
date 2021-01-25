@@ -17,6 +17,7 @@ class SearchViewTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Set content to labels
     var location: Location? {
         didSet {
             guard let location = location else {
@@ -27,6 +28,7 @@ class SearchViewTableCell: UITableViewCell {
         }
     }
     
+    // Views init
     let cellView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -62,13 +64,14 @@ class SearchViewTableCell: UITableViewCell {
     }()
     
     fileprivate func setupCellView() {
-        addSubview(cellView)
-        self.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
+        // Add subviews
+        addSubview(cellView)
         cellView.addSubview(cellTitleLabel)
         cellView.addSubview(cellCountryLabel)
         cellView.addSubview(cellArrow)
         
+        // Set constraints
         cellView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         cellView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         cellView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
@@ -77,14 +80,22 @@ class SearchViewTableCell: UITableViewCell {
         cellTitleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cellTitleLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
         cellTitleLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor,constant: 15).isActive = true
-        cellTitleLabel.trailingAnchor.constraint(equalTo: cellCountryLabel.leadingAnchor).isActive = true
+        cellTitleLabel.trailingAnchor.constraint(equalTo: cellCountryLabel.leadingAnchor, constant: 0).isActive = true
         
         cellCountryLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cellCountryLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
-        cellCountryLabel.trailingAnchor.constraint(equalTo: cellArrow.leadingAnchor,constant: -5).isActive = true
+        cellCountryLabel.trailingAnchor.constraint(equalTo: cellArrow.leadingAnchor, constant: -8).isActive = true
         
         cellArrow.heightAnchor.constraint(equalTo: cellView.heightAnchor).isActive = true
         cellArrow.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -15).isActive = true
         
+        // Set content hugging and compression - Compres First label if too long, do not compress Country label
+        cellTitleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        cellCountryLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        cellArrow.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        cellTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        cellCountryLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        cellArrow.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
 }

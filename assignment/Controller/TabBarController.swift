@@ -41,17 +41,16 @@ class TabBarController: UITabBarController {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.Custom.purple!], for: .selected)
         
         // NavBar Setup
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithOpaqueBackground()
-        
-        navSearchController.navigationBar.prefersLargeTitles = true
-        navFavoritesController.navigationBar.prefersLargeTitles = true
-               
-        UINavigationBar.appearance().standardAppearance = navAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
-        UINavigationBar.appearance().backgroundColor = .clear
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
+//        let navAppearance = UINavigationBarAppearance()
+//        navAppearance.configureWithOpaqueBackground()
+//        
+//        navSearchController.navigationBar.prefersLargeTitles = true
+//        navFavoritesController.navigationBar.prefersLargeTitles = true
+//
+//        UINavigationBar.appearance().standardAppearance = navAppearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+//        UINavigationBar.appearance().backgroundColor = .clear
+//        UINavigationBar.appearance().isTranslucent = false
         
         // TabBar items setup
         navMapController.tabBarItem = UITabBarItem(title: "Map", image: mapSymbol, selectedImage: mapSymbol?.withTintColor(UIColor.Custom.purple!))
