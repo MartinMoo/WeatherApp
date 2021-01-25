@@ -11,12 +11,16 @@ import MapKit
 
 class DetailViewController: UIViewController {
     var selectedLocation = MKMapItem()
+    var latitude: Double = 0
+    var longitude: Double = 0
     var weatherManager = WeatherManager()
+    var addToFavorites = true
 
     var forecastDays: [DailyModel] = []
+    
     var currentWeather: CurrentWeather? {
         didSet {
-            if let data = currentWeather {
+            if let data = currentWeather { // Pass updated data to header view
                 header.currentWeather = data
                 UIView.animate(withDuration: 0.3) {
                     self.header.alpha = 1
@@ -26,7 +30,7 @@ class DetailViewController: UIViewController {
     }
     var weatherData: WeatherModel? {
         didSet {
-            if let data = weatherData {
+            if let data = weatherData { // Pass updated data to tableView
                 forecastDays = data.daily
                 currentWeather = data.current
                 UIView.animate(withDuration: 0.3, delay: 0.2) {
@@ -42,14 +46,17 @@ class DetailViewController: UIViewController {
     let scrollView = UIScrollView()
     let favoriteButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.label, for: .normal)
-        button.setTitle("Add to favorites", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16,weight: .semibold)
         return button
     }()
 
+    //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        latitude = (selectedLocation.placemark.location?.coordinate.latitude)!
+        longitude = (selectedLocation.placemark.location?.coordinate.longitude)!
 
         self.view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
@@ -66,6 +73,8 @@ class DetailViewController: UIViewController {
         setupUI()
     }
     
+    
+    //MARK: - Methods for UI
     fileprivate func setupUI() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,13 +108,31 @@ class DetailViewController: UIViewController {
         favoriteButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,constant: 15).isActive = true
         favoriteButton.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: 0).isActive = true
         favoriteButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -15).isActive = true
+        
+        if addToFavorites == true {
+            favoriteButton.setTitleColor(UIColor.Custom.purple, for: .normal)
+            favoriteButton.setTitle("Add to favorites", for: .normal)
+            favoriteButton.addTarget(self, action: #selector(addLocationToCoreData), for: .touchUpInside)
+        } else {
+            favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
+            favoriteButton.setTitle("Remove from favorites", for: .normal)
+            favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
+        }
     }
-
     
+    @objc func addLocationToCoreData(sender: UIButton) {
+        print("Add")
+        CoreDataManager.shared.addLocation(name: selectedLocation.name!, longitude: longitude, latitude: latitude)
+    }
+    
+    @objc func removeLocationFromCoreData(sender: UIButton) {
+        print("Remove") 
+    }
+    
+
+    //MARK: - Get weather data
     fileprivate func getWeatherData() {
-        let lattitude = selectedLocation.placemark.location?.coordinate.latitude
-        let longitude = selectedLocation.placemark.location?.coordinate.longitude
-        weatherManager.fetchWeather(latitude: lattitude!, longitude: longitude!)
+        weatherManager.fetchWeather(latitude: latitude, longitude: longitude)
     }
     
 //    fileprivate func setupNavbar() {
@@ -155,6 +182,7 @@ extension DetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+//MARK: - Weather Manager Delegate methods
 // Update tableView with weather data
 extension DetailViewController: WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {

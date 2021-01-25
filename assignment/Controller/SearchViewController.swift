@@ -16,7 +16,8 @@ class SearchViewController: UITableViewController {
     var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
-
+    
+    //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -27,7 +28,7 @@ class SearchViewController: UITableViewController {
         setupSearchController()
     }
     
-    
+    //MARK: - Methods for UI
     func setupSearchController() {
         // SearchController Setup
         searchController.searchResultsUpdater = self

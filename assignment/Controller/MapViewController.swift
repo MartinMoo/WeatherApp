@@ -20,6 +20,7 @@ class MapViewController: UIViewController {
     private let locationService = LocationService()
     private let locationManager = CLLocationManager()
 
+    //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         window?.rootViewController = tabBarController
         window?.backgroundColor = .systemBackground
+        
+        if CoreDataManager.shared.isEntityEmpty(entity: "FavoriteLocation") {
+            addInitialLocationList()
+        }
 
         return true
     }
@@ -35,7 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    func addInitialLocationList() {
+        CoreDataManager.shared.addLocation(name: "Praha", longitude: 0, latitude: 0)
+        CoreDataManager.shared.addLocation(name: "Bratislava", longitude: 10, latitude: 10)
+        CoreDataManager.shared.addLocation(name: "Zilina", longitude: 20, latitude: 20)
+        CoreDataManager.shared.addLocation(name: "Liptovsky Mikulas", longitude: 30, latitude: 30)
+    }
 }
 
