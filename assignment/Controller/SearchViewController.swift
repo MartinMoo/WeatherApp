@@ -102,7 +102,8 @@ extension SearchViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.selectedLocation = matchingLocations[indexPath.row]
-        print(matchingLocations[indexPath.row])
+        vc.title = matchingLocations[indexPath.row].name
+        vc.view.backgroundColor = .systemBackground
         searchController.searchBar.resignFirstResponder()
         navigationController?.pushViewController(vc, animated: true)
     }

@@ -20,13 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = .systemBackground
         
 
-        let backSymbol = UIImage(systemName: "arrow.left.circle.fill")?.withTintColor(UIColor.Custom.purple!, renderingMode: .alwaysOriginal)
-        UINavigationBar.appearance().backIndicatorImage = backSymbol
-        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backSymbol
-        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
-        UINavigationBar.appearance().prefersLargeTitles = true
-        UINavigationBar.appearance().backgroundColor = .clear
-        UINavigationBar.appearance().isTranslucent = false
+//        let backSymbol = UIImage(systemName: "arrow.left.circle.fill")?.withTintColor(UIColor.Custom.purple!, renderingMode: .alwaysOriginal)
+//        UINavigationBar.appearance().backIndicatorImage = backSymbol
+//        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backSymbol
+//        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
+//        UINavigationBar.appearance().prefersLargeTitles = true
+//        UINavigationBar.appearance().backgroundColor = .clear
+//        UINavigationBar.appearance().isTranslucent = false
         
         return true
     }

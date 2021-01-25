@@ -68,14 +68,11 @@ struct WeatherManager {
                     daily.append(newDay)
                 }
             }
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "EEEE"
-//            let date = NSDate(timeIntervalSince1970: decodedData.daily[1].dt)
-//            let dayName = formatter.string(from: date as Date)
-//            print(dayName)
+            
+            let currentWeather: CurrentWeather = CurrentWeather(curTemperature: temp, curFeelTemp: feelTemp, curDescription: description)
 
             // Feed return data to weather model
-            let weather = WeatherModel(curTemperature: temp, curFeelTemp: feelTemp, curDescription: description, daily: daily)
+            let weather = WeatherModel(current: currentWeather, daily: daily)
             return weather
             
         } catch {

@@ -9,7 +9,7 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UITableViewController {
     var selectedLocation = MKMapItem()
     var weatherManager = WeatherManager()
     
@@ -17,21 +17,39 @@ class DetailViewController: UIViewController {
     var feelTempLabel = UILabel()
     var weatherLabel = UILabel()
     var currentWeatherView = UIView()
+    
+    var forecastDays: [DailyModel] = []
+    var currentWeather: CurrentWeather?
+    var weatherData: WeatherModel? {
+        didSet {
+            if let data = weatherData {
+                forecastDays = data.daily
+                currentWeather = data.current
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemBackground
         
-        navigationItem.largeTitleDisplayMode = .never
+        
+        self.view.backgroundColor = .systemBackground
+        tableView.backgroundColor = .systemBackground
+        
         weatherManager.delegate = self
-        setupNavbar()
-        setupUI()
+        getWeatherData()
+        
+        self.tableView.register(DetailViewTableHead.self, forHeaderFooterViewReuseIdentifier: "DetailHead")
+        self.tableView.register(DetailViewTableCell.self, forCellReuseIdentifier: "DetailCell")
+    }
+    
+    fileprivate func getWeatherData() {
         let lattitude = selectedLocation.placemark.location?.coordinate.latitude
         let longitude = selectedLocation.placemark.location?.coordinate.longitude
         weatherManager.fetchWeather(latitude: lattitude!, longitude: longitude!)
     }
     
-    fileprivate func setupNavbar() {
+//    fileprivate func setupNavbar() {
     //TODO: Two Linse Large Title in navigationbar?
 //        let dateLabel: UILabel = {
 //            let label = UILabel()
@@ -59,71 +77,38 @@ class DetailViewController: UIViewController {
 //        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
 //        UINavigationBar.appearance().backIndicatorImage = backImage
 //        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
-        
 
+    
+    // MARK: - UITableViewController Methods
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return forecastDays.count
     }
     
-    fileprivate func setupUI() {
-        
-        currentWeatherView.backgroundColor = .clear
-        currentWeatherView.translatesAutoresizingMaskIntoConstraints = false
-        currentWeatherView.alpha = 0
-
-        tempLabel.textColor = .label
-        tempLabel.font = UIFont.systemFont(ofSize: 64, weight: .black)
-        tempLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        weatherLabel.textColor = .label
-        weatherLabel.font = UIFont.systemFont(ofSize: 32)
-        weatherLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        feelTempLabel.textColor = UIColor.Custom.gray
-        feelTempLabel.font = UIFont.systemFont(ofSize: 16,weight: .semibold)
-        feelTempLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(currentWeatherView)
-        currentWeatherView.addSubview(tempLabel)
-        currentWeatherView.addSubview(weatherLabel)
-        currentWeatherView.addSubview(feelTempLabel)
-        
-        // Add default content to generate intrinsic content size
-        tempLabel.text = " "
-        weatherLabel.text = " "
-        feelTempLabel.text = " "
-        
-        currentWeatherView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        currentWeatherView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-        currentWeatherView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-        
-        tempLabel.heightAnchor.constraint(equalToConstant: tempLabel.intrinsicContentSize.height).isActive = true
-        tempLabel.topAnchor.constraint(equalTo: currentWeatherView.topAnchor).isActive = true
-        tempLabel.bottomAnchor.constraint(equalTo: weatherLabel.topAnchor, constant: -5).isActive = true
-        tempLabel.leadingAnchor.constraint(equalTo: currentWeatherView.leadingAnchor).isActive = true
-        tempLabel.trailingAnchor.constraint(equalTo: currentWeatherView.trailingAnchor).isActive = true
-        
-        weatherLabel.heightAnchor.constraint(equalToConstant: weatherLabel.intrinsicContentSize.height).isActive = true
-        weatherLabel.bottomAnchor.constraint(equalTo: feelTempLabel.topAnchor, constant: -5).isActive = true
-        weatherLabel.leadingAnchor.constraint(equalTo: currentWeatherView.leadingAnchor).isActive = true
-        weatherLabel.trailingAnchor.constraint(equalTo: currentWeatherView.trailingAnchor).isActive = true
-        
-        feelTempLabel.heightAnchor.constraint(equalToConstant: feelTempLabel.intrinsicContentSize.height).isActive = true
-        feelTempLabel.bottomAnchor.constraint(equalTo: currentWeatherView.bottomAnchor).isActive = true
-        feelTempLabel.leadingAnchor.constraint(equalTo: currentWeatherView.leadingAnchor).isActive = true
-        feelTempLabel.trailingAnchor.constraint(equalTo: currentWeatherView.trailingAnchor).isActive = true
-        
-        //TODO: Make it a TableView under "normal" views, or make it a UITableController with custom head for current day and rows for forecast
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let day = forecastDays[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! DetailViewTableCell
+        cell.day = day
+        return cell
     }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DetailHead") as! DetailViewTableHead
+        header.currentWeather = currentWeather
+        return header
+    }
+    
 }
 
 extension DetailViewController: WeatherManagerDelegate {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
         DispatchQueue.main.async {
-            self.tempLabel.text = weather.temperatureString + "°C"
-            self.weatherLabel.text = weather.curDescription.capitalizingFirstLetter()
-            self.feelTempLabel.text = "Feels like " + weather.feelTempString + "°C"
-            UIView.animate(withDuration: 0.5, delay: 0.2) {
-                self.currentWeatherView.alpha = 1
-            }
+//            self.forecastDays = weather.daily
+            self.weatherData = weather
+            self.tableView.reloadData()
         }
     }
     
