@@ -19,6 +19,8 @@
 		F32CC73425BF67960097B4F4 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F32CC73225BF67960097B4F4 /* Model.xcdatamodeld */; };
 		F32CC74125BF6AAD0097B4F4 /* FavoriteLocation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32CC73F25BF6AAD0097B4F4 /* FavoriteLocation+CoreDataClass.swift */; };
 		F32CC74225BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32CC74025BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift */; };
+		F33D95D825BFA477000A8DFE /* FavoriteLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D95D725BFA477000A8DFE /* FavoriteLocationCell.swift */; };
+		F33D95DB25BFB536000A8DFE /* LocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D95DA25BFB536000A8DFE /* LocationExtension.swift */; };
 		F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEB25BB55F100757AEF /* AppDelegate.swift */; };
 		F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DED25BB55F100757AEF /* SceneDelegate.swift */; };
 		F3B28DF025BB55F100757AEF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEF25BB55F100757AEF /* MapViewController.swift */; };
@@ -46,6 +48,8 @@
 		F32CC73325BF67960097B4F4 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		F32CC73F25BF6AAD0097B4F4 /* FavoriteLocation+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteLocation+CoreDataClass.swift"; sourceTree = "<group>"; };
 		F32CC74025BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		F33D95D725BFA477000A8DFE /* FavoriteLocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteLocationCell.swift; sourceTree = "<group>"; };
+		F33D95DA25BFB536000A8DFE /* LocationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationExtension.swift; sourceTree = "<group>"; };
 		F3B28DE825BB55F100757AEF /* assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B28DEB25BB55F100757AEF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3B28DED25BB55F100757AEF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				F32CC6DA25BDDAB70097B4F4 /* SearchViewTableCell.swift */,
 				F32CC6E925BEC9FF0097B4F4 /* DetailViewTableHead.swift */,
 				F32CC6EC25BED2CB0097B4F4 /* DetailViewTableCell.swift */,
+				F33D95D725BFA477000A8DFE /* FavoriteLocationCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 			children = (
 				F3B28E1625BC418F00757AEF /* ColorExtension.swift */,
 				F32CC6E525BE2C870097B4F4 /* StringExtension.swift */,
+				F33D95DA25BFB536000A8DFE /* LocationExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -255,9 +261,11 @@
 				F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */,
 				F32CC6E225BDE9250097B4F4 /* WeatherModel.swift in Sources */,
 				F32CC6EA25BEC9FF0097B4F4 /* DetailViewTableHead.swift in Sources */,
+				F33D95D825BFA477000A8DFE /* FavoriteLocationCell.swift in Sources */,
 				F32CC74225BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift in Sources */,
 				F32CC73425BF67960097B4F4 /* Model.xcdatamodeld in Sources */,
 				F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */,
+				F33D95DB25BFB536000A8DFE /* LocationExtension.swift in Sources */,
 				F32CC6D625BDDA880097B4F4 /* SearchLocation.swift in Sources */,
 				F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */,
 			);

@@ -11,3 +11,8 @@ struct Location {
     var city: String
     var country: String
 }
+
+struct Coordinates {
+    var lat: Double
+    var long: Double
+}

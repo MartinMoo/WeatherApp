@@ -217,10 +217,9 @@ extension MapViewController: LocationServiceDelegate {
     
     func authorizationDenied() {
         DispatchQueue.main.async { [weak self] in
-            guard let weakSelf = self else {
-                return
+            if self != nil  {
+                self?.presentLocationPermissionAlert()
             }
-            self?.presentLocationPermissionAlert()
         }
     }
 }

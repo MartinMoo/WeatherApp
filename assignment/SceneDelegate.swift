@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  assignment
 //
-//  Created by Moo Maa on 22/01/2021.
+//  Created by Martin Miklas on 22/01/2021.
 //
 
 import UIKit

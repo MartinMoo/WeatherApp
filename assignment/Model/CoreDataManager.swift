@@ -79,6 +79,41 @@ struct CoreDataManager {
         } catch let error {
             print("Failed to fetch or delete location from context: \(error)")
         }
+    }
+    
+    func deleteLocation(lat: Double, long: Double) {
+        let context = persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
+        fetchRequest.predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
         
+        do {
+            let locationsToRemove = try context.fetch(fetchRequest) as [NSManagedObject]
+            locationsToRemove.forEach { (locationToRemove) in
+                context.delete(locationToRemove)
+            }
+            do {
+                try context.save()
+            } catch let error {
+                print("Failed to save context: \(error)")
+            }
+        } catch let error {
+            print("Failed to fetch or delete location from context: \(error)")
+        }
+    }
+    
+    func locationExists(lat: Double, long: Double) -> Bool {
+        let context = persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
+        fetchRequest.predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
+        
+        var results: [NSManagedObject] = []
+        
+        do {
+            results = try context.fetch(fetchRequest) as [NSManagedObject]
+        } catch let error {
+            print("Error executing fetch request: \(error)")
+        }
+        
+        return results.count > 0
     }
 }

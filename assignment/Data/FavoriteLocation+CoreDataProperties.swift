@@ -2,7 +2,7 @@
 //  FavoriteLocation+CoreDataProperties.swift
 //  assignment
 //
-//  Created by Moo Maa on 25/01/2021.
+//  Created by Martin Miklas on 25/01/2021.
 //
 //
 

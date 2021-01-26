@@ -2,7 +2,7 @@
 //  DetailViewController.swift
 //  assignment
 //
-//  Created by Martin Miklas on 22/01/2021.
+//  Created by Martin Miklas on 23/01/2021.
 //
 
 import UIKit
@@ -89,7 +89,7 @@ class DetailViewController: UIViewController {
         scrollView.addSubview(tableView)
         scrollView.addSubview(favoriteButton)
         
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -109,24 +109,32 @@ class DetailViewController: UIViewController {
         favoriteButton.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: 0).isActive = true
         favoriteButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -15).isActive = true
         
-        if addToFavorites == true {
-            favoriteButton.setTitleColor(UIColor.Custom.purple, for: .normal)
-            favoriteButton.setTitle("Add to favorites", for: .normal)
-            favoriteButton.addTarget(self, action: #selector(addLocationToCoreData), for: .touchUpInside)
-        } else {
-            favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
-            favoriteButton.setTitle("Remove from favorites", for: .normal)
-            favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
-        }
+        checkIfLocationExistInFavorites()
     }
     
+    //TODO: Add Two Linees Large Title/ compact in navigationbar
+    
+    //MARK: - Methods for add/remove favorites locations to CoreData
     @objc func addLocationToCoreData(sender: UIButton) {
-        print("Add")
         CoreDataManager.shared.addLocation(name: selectedLocation.name!, longitude: longitude, latitude: latitude)
+        checkIfLocationExistInFavorites()
     }
     
     @objc func removeLocationFromCoreData(sender: UIButton) {
-        print("Remove") 
+        CoreDataManager.shared.deleteLocation(lat: latitude, long: longitude)
+        checkIfLocationExistInFavorites()
+    }
+    
+    fileprivate func checkIfLocationExistInFavorites() {
+        if CoreDataManager.shared.locationExists(lat: latitude, long: longitude) {
+            favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
+            favoriteButton.setTitle("Remove from favorites", for: .normal)
+            favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
+        } else {
+            favoriteButton.setTitleColor(UIColor.Custom.purple, for: .normal)
+            favoriteButton.setTitle("Add to favorites", for: .normal)
+            favoriteButton.addTarget(self, action: #selector(addLocationToCoreData), for: .touchUpInside)
+        }
     }
     
 
@@ -134,36 +142,6 @@ class DetailViewController: UIViewController {
     fileprivate func getWeatherData() {
         weatherManager.fetchWeather(latitude: latitude, longitude: longitude)
     }
-    
-//    fileprivate func setupNavbar() {
-    //TODO: Add Two Linees Large Title/ compact in navigationbar
-//        let dateLabel: UILabel = {
-//            let label = UILabel()
-//            label.textColor = UIColor.Custom.gray
-//            label.font = UIFont.systemFont(ofSize: 16)
-//            label.translatesAutoresizingMaskIntoConstraints = false
-//            return label
-//        }()
-//        let cityLabel: UILabel = {
-//            let label = UILabel()
-//            label.textColor = .label
-//            label.font = UIFont.systemFont(ofSize: 16)
-//            label.translatesAutoresizingMaskIntoConstraints = false
-//            return label
-//        }()
-//
-//        let titleView: UIView = {
-//            let view = UIView()
-//            return view
-//        }()
-//
-//        titleView.addSubview(dateLabel)
-//        titleView.addSubview(cityLabel)
-//        let backImage = UIImage(systemName: "arrow.left.circle.fill")?.withTintColor(UIColor.Custom.purple!, renderingMode: .alwaysOriginal)
-//        UINavigationBar.appearance().tintColor = UIColor.Custom.purple
-//        UINavigationBar.appearance().backIndicatorImage = backImage
-//        UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImage
-
 }
 
 
