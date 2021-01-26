@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class FavoritesViewController: UIViewController {
     let inset:CGFloat = 15
@@ -16,6 +17,7 @@ class FavoritesViewController: UIViewController {
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.view.backgroundColor = .systemBackground
         
         collectionView = {
@@ -39,28 +41,42 @@ class FavoritesViewController: UIViewController {
         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
+        locations = CoreDataManager.shared.fetchLocationList()
+        collectionView.reloadData()
+        
+        // Notification if there was a change in CoreData
+        NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    // Update badge value on notification from observer
+    @objc func contextObjectsDidChange(_ notification: Notification) {
         locations = CoreDataManager.shared.fetchLocationList()
         collectionView.reloadData()
     }
-    
-
 }
 
 //MARK: UICollectionView DataSource Methods
-extension FavoritesViewController: UICollectionViewDataSource, UICollectionViewDelegate  {
+extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return locations.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteCell", for: indexPath) as! FavoriteLocationCell
-        let coordinates = Coordinates(lat: locations[indexPath.row].latitude, long: locations[indexPath.row].longitude)
+        let coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D (latitude: locations[indexPath.row].latitude, longitude: locations[indexPath.row].longitude)
         cell.coordinates = coordinates
         return cell
+    }
+}
+
+//MARK: UICollectionView Delegate Methods
+extension FavoritesViewController: UICollectionViewDelegate {
+    // Go to DetailViewController after selecting cell
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.title = locations[indexPath.row].name
+        vc.locationCoordinates = CLLocationCoordinate2D(latitude: locations[indexPath.row].latitude, longitude: locations[indexPath.row].longitude)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

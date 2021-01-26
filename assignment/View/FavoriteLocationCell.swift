@@ -20,18 +20,26 @@ class FavoriteLocationCell: UICollectionViewCell {
     }
     
     // Set content to labels
-    var coordinates: Coordinates? {
+    var coordinates: CLLocationCoordinate2D? {
         didSet {
             guard let coordinates = coordinates else {
                 return
             }
-            let placemark = CLLocation(latitude: coordinates.lat, longitude: coordinates.long)
+            let zoomInKm: Double = 20
+            let latitudeDelta =  (zoomInKm / 4) / 111 // Rough approximation to off-center map of location based on zoom level in latitude degrees (it's not a friend with device rotation)
+            let placemark = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude) // Coordinates for reverese geocoding
+            let location2D = CLLocationCoordinate2D(latitude: coordinates.latitude - latitudeDelta, longitude: coordinates.longitude) // Coordinates for mapView
+
+            // Update labels and map with location names based on specified coordinates
             placemark.fetchCityAndCountry { city, country, error in
                 guard let city = city, let country = country, error == nil else { return }
                 self.cityLabel.text = city
                 self.countryLabel.text = country
+                self.zoomToLocation(centerCooridnate: location2D, zoomInKm: zoomInKm)
+                UIView.animate(withDuration: 0.4) {
+                    self.contentView.alpha = 1
+                }
             }
-            
         }
     }
     
@@ -56,7 +64,6 @@ class FavoriteLocationCell: UICollectionViewCell {
         label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Cii"
         return label
     }()
     
@@ -65,7 +72,6 @@ class FavoriteLocationCell: UICollectionViewCell {
         label.textColor = .label
         label.font = UIFont.systemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Hoo"
         return label
     }()
     
@@ -111,6 +117,16 @@ class FavoriteLocationCell: UICollectionViewCell {
         // Additional UI changes after main views are rendered and ready to be changed
         contentView.layoutIfNeeded()
         contentView.layer.cornerRadius = contentView.frame.size.height / 15
+        
+        // Set Cell to be hidden before filling it with content
+        contentView.alpha = 0
     }
     
+    // Zoom map view to specified coordinates
+    fileprivate func zoomToLocation(centerCooridnate location: CLLocationCoordinate2D, zoomInKm radius: CLLocationDistance) {
+        let span = radius * 2000
+        let region: MKCoordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: span, longitudinalMeters: span)
+        mapView.setRegion(region, animated: false)
+    }
 }
+

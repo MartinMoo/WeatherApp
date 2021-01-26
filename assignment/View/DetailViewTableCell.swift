@@ -58,11 +58,11 @@ class DetailViewTableCell: UITableViewCell {
             humidityLabel.text = String(day.dailyHumidity) + "%"
             temperatureLabel.text = String(format: "%.1f", day.dailyTemp) + "°C"
             
-            //TODO: Multicolor
+            //FIXME: Multicolor symbols seems to not to work in UIKit
             var image = UIImage(systemName: "sun.max.fill")
-            if #available(iOS 14, *) { // For some reason multicolor symbols seems to not to work in UIKit
+            if #available(iOS 14, *) { // iOS 14 up, icons sholud be multicolor
                 image = UIImage(systemName: conditionName)?.withRenderingMode(.alwaysOriginal)
-            } else {
+            } else { // iOS 13 render with tint color
                 image = UIImage(systemName: conditionName)?.withTintColor(UIColor.Custom.blue!, renderingMode: .alwaysOriginal)
             }
             weatherIcon.image = image?.withAlignmentRectInsets(UIEdgeInsets(top: -5, left: -5, bottom: -5, right: -5))

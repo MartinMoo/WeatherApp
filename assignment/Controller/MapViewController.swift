@@ -23,6 +23,7 @@ class MapViewController: UIViewController {
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -30,6 +31,10 @@ class MapViewController: UIViewController {
         locationService.delegate = self
         
         setupUI()
+        populateMapWithAnnotation()
+        
+        // Notification if there was a change in CoreData
+        NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +46,7 @@ class MapViewController: UIViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+
     //MARK: - UI Methods
     func setupUI() { // Boilerplate, no UIView extensions...
 
@@ -165,18 +170,14 @@ class MapViewController: UIViewController {
         
         // Convert location co CLocationCoordinate2D
         let pressedCoordinates: CLLocationCoordinate2D = mapView.convert(pressedLocation, toCoordinateFrom: mapView)
-        
-        // Init pin
-        let marker: MKPointAnnotation = MKPointAnnotation()
-        marker.title = "Pin"
-        
-        marker.coordinate = pressedCoordinates
-        mapView.addAnnotation(marker)
+
+        // Place Annotation on map
+        mapView.addAnnotation(createAnnotation(latitude: pressedCoordinates.latitude, longitude: pressedCoordinates.longitude))
     }
     
     //MARK: - Map Methods
     // Zoom to user location
-    private func centerToUserLocation() {
+    fileprivate func centerToUserLocation() {
         let mapRegion = MKCoordinateRegion(center: mapView.userLocation.coordinate, latitudinalMeters: zoomLevel, longitudinalMeters: zoomLevel)
         mapView.setRegion(mapRegion, animated: true)
     }
@@ -199,6 +200,42 @@ class MapViewController: UIViewController {
         }()
         
         self.present(locationAlert, animated: true, completion: nil)
+    }
+    
+    // Add Favorite locations to map
+    fileprivate func populateMapWithAnnotation() {
+        // Clear old annotations
+        let annotations = mapView.annotations
+        mapView.removeAnnotations(annotations)
+        
+        // Get list of favorite locations from CoreData
+        let favoriteLocations = CoreDataManager.shared.fetchLocationList()
+        
+        for location in favoriteLocations {
+            // Place Annotation on map
+            mapView.addAnnotation(createAnnotation(latitude: location.latitude, longitude: location.longitude))
+        }
+    }
+    
+    fileprivate func createAnnotation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
+        // Convert location co CLLocationCoordinate2D
+        let locationCoordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let locationForCity = CLLocation(latitude: latitude, longitude: longitude)
+        
+        // Init pin
+        let marker: MKPointAnnotation = MKPointAnnotation()
+        locationForCity.fetchCity(completion: { (city, error) in
+            guard let city = city, error == nil else { return }
+            marker.title = city
+        })
+        
+        marker.coordinate = locationCoordinates
+        return marker
+    }
+    
+    // Update favorite annotations on map
+    @objc func contextObjectsDidChange(_ notification: Notification) {
+        populateMapWithAnnotation()
     }
 }
 
@@ -226,8 +263,12 @@ extension MapViewController: LocationServiceDelegate {
 
 
 extension MapViewController: MKMapViewDelegate {
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let vc = DetailViewController()
+        
+        // Get coordinates from annotation and pass it to next viewController
+        vc.locationCoordinates = view.annotation?.coordinate
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -235,3 +276,4 @@ extension MapViewController: MKMapViewDelegate {
 extension MapViewController: CLLocationManagerDelegate {
     
 }
+

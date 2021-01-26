@@ -7,12 +7,9 @@
 
 import Foundation
 
+// Struct for SearchViewController and  SearchViewTableCell
 struct Location {
     var city: String
     var country: String
 }
 
-struct Coordinates {
-    var lat: Double
-    var long: Double
-}

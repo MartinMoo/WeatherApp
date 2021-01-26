@@ -10,37 +10,17 @@ import CoreLocation
 import MapKit
 
 class DetailViewController: UIViewController {
-    var selectedLocation = MKMapItem()
+    
+    var locationCoordinates: CLLocationCoordinate2D?
+    var locationName: String = ""
+    
     var latitude: Double = 0
     var longitude: Double = 0
     var weatherManager = WeatherManager()
     var addToFavorites = true
 
     var forecastDays: [DailyModel] = []
-    
-    var currentWeather: CurrentWeather? {
-        didSet {
-            if let data = currentWeather { // Pass updated data to header view
-                header.currentWeather = data
-                UIView.animate(withDuration: 0.3) {
-                    self.header.alpha = 1
-                }
-            }
-        }
-    }
-    var weatherData: WeatherModel? {
-        didSet {
-            if let data = weatherData { // Pass updated data to tableView
-                forecastDays = data.daily
-                currentWeather = data.current
-                UIView.animate(withDuration: 0.3, delay: 0.2) {
-                    self.tableView.alpha = 1
-                    self.favoriteButton.alpha = 1
-                }
-            }
-        }
-    }
-    
+
     let tableView = UITableView()
     let header = DetailViewTableHead(frame: CGRect.zero)
     let scrollView = UIScrollView()
@@ -50,13 +30,46 @@ class DetailViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16,weight: .semibold)
         return button
     }()
+    
+    //MARK: - Update Header and TableView
+    var currentWeather: CurrentWeather? {
+        didSet {
+            if let data = currentWeather { // Pass updated data to Header view
+                header.currentWeather = data
+                UIView.animate(withDuration: 0.3) {
+                    self.header.alpha = 1
+                }
+            }
+        }
+    }
+    var weatherData: WeatherModel? {
+        didSet {
+            if let data = weatherData { // Pass updated data to TableView
+                forecastDays = data.daily
+                currentWeather = data.current
+                UIView.animate(withDuration: 0.3, delay: 0.2) {
+                    self.tableView.alpha = 1
+                    self.favoriteButton.alpha = 1
+                }
+            }
+        }
+    }
 
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        latitude = (selectedLocation.placemark.location?.coordinate.latitude)!
-        longitude = (selectedLocation.placemark.location?.coordinate.longitude)!
+        // Check Coordinates and update local coordinates and location name
+        if let checkedLatitude = locationCoordinates?.latitude, let checkedLongitude = locationCoordinates?.longitude {
+            latitude = checkedLatitude
+            longitude = checkedLongitude
+            let placemark = CLLocation(latitude: checkedLatitude, longitude: checkedLongitude)
+            placemark.fetchCity { (city, error) in
+                guard let city = city, error == nil else { return }
+                self.locationName = city
+                self.title = self.locationName
+            }
+        }
 
         self.view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
@@ -116,7 +129,7 @@ class DetailViewController: UIViewController {
     
     //MARK: - Methods for add/remove favorites locations to CoreData
     @objc func addLocationToCoreData(sender: UIButton) {
-        CoreDataManager.shared.addLocation(name: selectedLocation.name!, longitude: longitude, latitude: latitude)
+        CoreDataManager.shared.addLocation(name: locationName, longitude: longitude, latitude: latitude)
         checkIfLocationExistInFavorites()
     }
     
@@ -126,7 +139,7 @@ class DetailViewController: UIViewController {
     }
     
     fileprivate func checkIfLocationExistInFavorites() {
-        if CoreDataManager.shared.locationExists(lat: latitude, long: longitude) {
+        if CoreDataManager.shared.locationExists(name: locationName, lat: latitude, long: longitude) {
             favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
             favoriteButton.setTitle("Remove from favorites", for: .normal)
             favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)

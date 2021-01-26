@@ -102,10 +102,16 @@ extension SearchViewController {
     // Selected row in TableView
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.selectedLocation = matchingLocations[indexPath.row]
+        var coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D()
+        
+        if let latitude = matchingLocations[indexPath.row].placemark.location?.coordinate.latitude, let longitude = matchingLocations[indexPath.row].placemark.location?.coordinate.longitude {
+            coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            vc.locationCoordinates = coordinates
+        }
+
         vc.title = matchingLocations[indexPath.row].name
         vc.view.backgroundColor = .systemBackground
-        searchController.searchBar.resignFirstResponder()
+
         navigationController?.pushViewController(vc, animated: true)
     }
 }

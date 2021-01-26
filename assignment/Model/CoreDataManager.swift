@@ -38,6 +38,8 @@ struct CoreDataManager {
     func fetchLocationList() -> [FavoriteLocation] {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
         do {
             let locationList = try context.fetch(fetchRequest)
             return locationList
@@ -101,10 +103,10 @@ struct CoreDataManager {
         }
     }
     
-    func locationExists(lat: Double, long: Double) -> Bool {
+    func locationExists(name: String, lat: Double, long: Double) -> Bool {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        fetchRequest.predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
+        fetchRequest.predicate = NSPredicate(format: "(name == %@) OR (latitude == %@) AND (longitude == %@)",name as NSString, lat as NSNumber, long as NSNumber)
         
         var results: [NSManagedObject] = []
         
