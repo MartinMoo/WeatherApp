@@ -29,7 +29,7 @@ class DetailViewTableHead: UIView {
             }
             tempLabel.text = String(format: "%.1f", data.curTemperature) + "°C"
             weatherLabel.text = data.curDescription.capitalizingFirstLetter()
-            feelTempLabel.text = "Feels like " + String(format: "%.1f", data.curFeelTemp) + "°C"
+            feelTempLabel.text = Localize.Detail.FeelsLike + String(format: "%.1f", data.curFeelTemp) + "°C"
         }
     }
     

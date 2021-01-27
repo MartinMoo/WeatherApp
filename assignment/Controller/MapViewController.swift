@@ -65,7 +65,7 @@ class MapViewController: UIViewController {
         }()
         
         let mapTypeSegmentedControl: UISegmentedControl = {
-            let sc = UISegmentedControl(items: ["Standard","Satellite"])
+            let sc = UISegmentedControl(items: [Localize.Map.Standard,Localize.Map.Satellite])
             sc.selectedSegmentIndex = 0
             sc.translatesAutoresizingMaskIntoConstraints = false
             sc.addTarget(self, action: #selector(segmentedControlAction), for: .valueChanged)
@@ -185,9 +185,9 @@ class MapViewController: UIViewController {
     fileprivate func presentLocationPermissionAlert() {
         // Alert for denied location permision
         let locationAlert: UIAlertController = {
-            let alertController = UIAlertController(title: "Location Authorization", message: "GoodWeather needs location authorization to display user location. Please update location permission in your Privacy settings.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-            let updateSettingsAction = UIAlertAction(title: "Update Settings", style: .default) { (_) in
+            let alertController = UIAlertController(title: Localize.Alert.Location.Title, message: Localize.Alert.Location.Message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: Localize.Alert.Ok, style: .default, handler: nil)
+            let updateSettingsAction = UIAlertAction(title: Localize.Alert.UpdateSettings, style: .default) { (_) in
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(url)
                 }

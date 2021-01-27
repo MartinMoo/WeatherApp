@@ -106,10 +106,11 @@ struct CoreDataManager {
     func locationExists(name: String, lat: Double, long: Double) -> Bool {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
+        print(name)
         fetchRequest.predicate = NSPredicate(format: "(name == %@) OR (latitude == %@) AND (longitude == %@)",name as NSString, lat as NSNumber, long as NSNumber)
         
         var results: [NSManagedObject] = []
-        
+
         do {
             results = try context.fetch(fetchRequest) as [NSManagedObject]
         } catch let error {

@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  assignment
+
+  Created by Martin Miklas on 27/01/2021.
+  
+*/
+
+"TabBar.Map" = "Mapa";
+"TabBar.Search" = "Hľadať";
+"TabBar.Favorites" = "Obľúbené";
+
+"Map.Standard" = "Mapa";
+"Map.Satellite" = "Satelit";
+
+"Search.Title" = "Hľadať";
+"Search.Placeholder" = "Hľadať";
+
+"Favorites.Title" = "Obľúbené";
+
+"Detail.FeelsLike" = "Pocitová teplota";
+"Detail.AddToFavorites" = "Pridaj do obľúbených";
+"Detail.RemovesFromFavorites" = "Odstráň z obľúbených";
+
+"Alert.Ok" = "Ok";
+"Alert.UpdateSettings" = "Aktualizovať nastavenia";
+"Alert.Location.Title" = "Lokalizačné služby sú vypnuté";
+"Alert.Location.Message" = "GoodWeather potrebuje pre určenie Vašej polohy zapnuté Lokalizačné služby. Prosím aktualizujte nastavenie Vašich Lokalizažných služieb v Nastavenia -> Súkromie -> Lokalizačné služby.";

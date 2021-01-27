@@ -36,8 +36,8 @@ class TabBarController: UITabBarController {
         navFavoritesController.viewControllers = [favoritesViewController]
 
         // View Controllers titles
-        searchViewController.title = "Search"
-        favoritesViewController.title = "Favorites"
+        searchViewController.title = Localize.Search.Title
+        favoritesViewController.title = Localize.Favorites.Title
 
         // Tab Bar Icons setup
         let mapSymbol = UIImage(systemName: "map")?.withTintColor(UIColor.Custom.gray!, renderingMode: .alwaysOriginal)
@@ -57,9 +57,9 @@ class TabBarController: UITabBarController {
         UINavigationBar.appearance().prefersLargeTitles = true
         
         // TabBar items/buttons setup
-        navMapController.tabBarItem = UITabBarItem(title: "Map", image: mapSymbol, selectedImage: mapSymbol?.withTintColor(UIColor.Custom.purple!))
-        navSearchController.tabBarItem = UITabBarItem(title: "Search", image: searchSymbol, selectedImage: searchSymbol?.withTintColor(UIColor.Custom.purple!))
-        navFavoritesController.tabBarItem = UITabBarItem(title: "Favorites", image: starSymbol, selectedImage: starSymbol?.withTintColor(UIColor.Custom.purple!))
+        navMapController.tabBarItem = UITabBarItem(title: Localize.TabBar.Map, image: mapSymbol, selectedImage: mapSymbol?.withTintColor(UIColor.Custom.purple!))
+        navSearchController.tabBarItem = UITabBarItem(title: Localize.TabBar.Search, image: searchSymbol, selectedImage: searchSymbol?.withTintColor(UIColor.Custom.purple!))
+        navFavoritesController.tabBarItem = UITabBarItem(title: Localize.TabBar.Favorites, image: starSymbol, selectedImage: starSymbol?.withTintColor(UIColor.Custom.purple!))
 
         // Add items to TabBar
         let tabBarList = [navMapController,navSearchController,navFavoritesController]

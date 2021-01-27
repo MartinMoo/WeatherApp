@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  assignment
+
+  Created by Martin Miklas on 27/01/2021.
+  
+*/
+
+NSLocationAlwaysAndWhenInUseUsageDescription = "GoodWeather needs acces to Location Services to determine your location.";
+NSLocationWhenInUseUsageDescription = "GoodWeather needs acces to Location Services to determine your location.";

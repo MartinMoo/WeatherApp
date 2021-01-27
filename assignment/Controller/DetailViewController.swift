@@ -68,6 +68,7 @@ class DetailViewController: UIViewController {
                 guard let city = city, error == nil else { return }
                 self.locationName = city
                 self.title = self.locationName
+                self.checkIfLocationExistInFavorites()
             }
         }
 
@@ -122,7 +123,6 @@ class DetailViewController: UIViewController {
         favoriteButton.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: 0).isActive = true
         favoriteButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -15).isActive = true
         
-        checkIfLocationExistInFavorites()
     }
     
     //TODO: Add Two Linees Large Title/ compact in navigationbar
@@ -140,12 +140,12 @@ class DetailViewController: UIViewController {
     
     fileprivate func checkIfLocationExistInFavorites() {
         if CoreDataManager.shared.locationExists(name: locationName, lat: latitude, long: longitude) {
+            favoriteButton.setTitle(Localize.Detail.RemovesFromFavorites, for: .normal)
             favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
-            favoriteButton.setTitle("Remove from favorites", for: .normal)
             favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
         } else {
+            favoriteButton.setTitle(Localize.Detail.AddToFavorites, for: .normal)
             favoriteButton.setTitleColor(UIColor.Custom.purple, for: .normal)
-            favoriteButton.setTitle("Add to favorites", for: .normal)
             favoriteButton.addTarget(self, action: #selector(addLocationToCoreData), for: .touchUpInside)
         }
     }

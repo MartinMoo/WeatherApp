@@ -21,6 +21,11 @@
 		F32CC74225BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32CC74025BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift */; };
 		F33D95D825BFA477000A8DFE /* FavoriteLocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D95D725BFA477000A8DFE /* FavoriteLocationCell.swift */; };
 		F33D95DB25BFB536000A8DFE /* LocationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D95DA25BFB536000A8DFE /* LocationExtension.swift */; };
+		F39CE43325C0E7900048BD04 /* LocalizationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CE43225C0E7900048BD04 /* LocalizationExtension.swift */; };
+		F39CE43925C0EA620048BD04 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F39CE43B25C0EA620048BD04 /* Localizable.strings */; };
+		F39CE43F25C0ED510048BD04 /* LocalizableConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39CE43E25C0ED510048BD04 /* LocalizableConstants.swift */; };
+		F39CE44625C0F2B50048BD04 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F39CE44225C0F2390048BD04 /* Info.plist */; };
+		F39CE44C25C0F3770048BD04 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F39CE44E25C0F3770048BD04 /* InfoPlist.strings */; };
 		F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEB25BB55F100757AEF /* AppDelegate.swift */; };
 		F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DED25BB55F100757AEF /* SceneDelegate.swift */; };
 		F3B28DF025BB55F100757AEF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28DEF25BB55F100757AEF /* MapViewController.swift */; };
@@ -50,6 +55,13 @@
 		F32CC74025BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteLocation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		F33D95D725BFA477000A8DFE /* FavoriteLocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteLocationCell.swift; sourceTree = "<group>"; };
 		F33D95DA25BFB536000A8DFE /* LocationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationExtension.swift; sourceTree = "<group>"; };
+		F39CE43225C0E7900048BD04 /* LocalizationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationExtension.swift; sourceTree = "<group>"; };
+		F39CE43A25C0EA620048BD04 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F39CE43C25C0EA770048BD04 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F39CE43E25C0ED510048BD04 /* LocalizableConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableConstants.swift; sourceTree = "<group>"; };
+		F39CE44525C0F2AD0048BD04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		F39CE44D25C0F3770048BD04 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F39CE44F25C0F37C0048BD04 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F3B28DE825BB55F100757AEF /* assignment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = assignment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B28DEB25BB55F100757AEF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3B28DED25BB55F100757AEF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +69,6 @@
 		F3B28DF225BB55F100757AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F3B28DF425BB55F400757AEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3B28DF725BB55F400757AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F3B28DF925BB55F400757AEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3B28E0C25BC35C600757AEF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F3B28E0F25BC396300757AEF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +97,16 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		F39CE43125C0E7370048BD04 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				F39CE43B25C0EA620048BD04 /* Localizable.strings */,
+				F39CE43E25C0ED510048BD04 /* LocalizableConstants.swift */,
+				F39CE44E25C0F3770048BD04 /* InfoPlist.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		F3B28DDF25BB55F100757AEF = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +126,7 @@
 		F3B28DEA25BB55F100757AEF /* assignment */ = {
 			isa = PBXGroup;
 			children = (
+				F39CE43125C0E7370048BD04 /* Localization */,
 				F32CC71F25BF60A20097B4F4 /* Data */,
 				F3B28E1C25BC6A9E00757AEF /* Service */,
 				F3B28E1525BC417700757AEF /* Extension */,
@@ -116,7 +138,7 @@
 				F3B28DF125BB55F100757AEF /* Main.storyboard */,
 				F3B28DF425BB55F400757AEF /* Assets.xcassets */,
 				F3B28DF625BB55F400757AEF /* LaunchScreen.storyboard */,
-				F3B28DF925BB55F400757AEF /* Info.plist */,
+				F39CE44225C0F2390048BD04 /* Info.plist */,
 				F32CC73225BF67960097B4F4 /* Model.xcdatamodeld */,
 			);
 			path = assignment;
@@ -163,6 +185,7 @@
 				F3B28E1625BC418F00757AEF /* ColorExtension.swift */,
 				F32CC6E525BE2C870097B4F4 /* StringExtension.swift */,
 				F33D95DA25BFB536000A8DFE /* LocationExtension.swift */,
+				F39CE43225C0E7900048BD04 /* LocalizationExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -216,6 +239,7 @@
 			knownRegions = (
 				en,
 				Base,
+				sk,
 			);
 			mainGroup = F3B28DDF25BB55F100757AEF;
 			productRefGroup = F3B28DE925BB55F100757AEF /* Products */;
@@ -233,7 +257,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3B28DF825BB55F400757AEF /* LaunchScreen.storyboard in Resources */,
+				F39CE44C25C0F3770048BD04 /* InfoPlist.strings in Resources */,
+				F39CE43925C0EA620048BD04 /* Localizable.strings in Resources */,
 				F3B28DF525BB55F400757AEF /* Assets.xcassets in Resources */,
+				F39CE44625C0F2B50048BD04 /* Info.plist in Resources */,
 				F3B28DF325BB55F100757AEF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,6 +284,7 @@
 				F3B28E0D25BC35C600757AEF /* TabBarController.swift in Sources */,
 				F32CC6DB25BDDAB70097B4F4 /* SearchViewTableCell.swift in Sources */,
 				F3B28DEC25BB55F100757AEF /* AppDelegate.swift in Sources */,
+				F39CE43325C0E7900048BD04 /* LocalizationExtension.swift in Sources */,
 				F32CC6CB25BD9F7B0097B4F4 /* WeatherData.swift in Sources */,
 				F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */,
 				F32CC6E225BDE9250097B4F4 /* WeatherModel.swift in Sources */,
@@ -266,6 +294,7 @@
 				F32CC73425BF67960097B4F4 /* Model.xcdatamodeld in Sources */,
 				F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */,
 				F33D95DB25BFB536000A8DFE /* LocationExtension.swift in Sources */,
+				F39CE43F25C0ED510048BD04 /* LocalizableConstants.swift in Sources */,
 				F32CC6D625BDDA880097B4F4 /* SearchLocation.swift in Sources */,
 				F3B28DEE25BB55F100757AEF /* SceneDelegate.swift in Sources */,
 			);
@@ -274,6 +303,32 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		F39CE43B25C0EA620048BD04 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F39CE43A25C0EA620048BD04 /* en */,
+				F39CE43C25C0EA770048BD04 /* sk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		F39CE44225C0F2390048BD04 /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F39CE44525C0F2AD0048BD04 /* Base */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
+		F39CE44E25C0F3770048BD04 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F39CE44D25C0F3770048BD04 /* en */,
+				F39CE44F25C0F37C0048BD04 /* sk */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		F3B28DF125BB55F100757AEF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,6 +352,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -358,6 +414,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

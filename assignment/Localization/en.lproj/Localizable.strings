@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  assignment
+
+  Created by Martin Miklas on 27/01/2021.
+  
+*/
+
+"TabBar.Map" = "Map";
+"TabBar.Search" = "Search";
+"TabBar.Favorites" = "Favorites";
+
+"Map.Standard" = "Standard";
+"Map.Satellite" = "Satellite";
+
+"Search.Title" = "Search";
+"Search.Placeholder" = "Search";
+
+"Favorites.Title" = "Favorites";
+
+"Detail.FeelsLike" = "Feels like";
+"Detail.AddToFavorites" = "Add to favorites";
+"Detail.RemovesFromFavorites" = "Remove from favorites";
+
+"Alert.Ok" = "Ok";
+"Alert.UpdateSettings" = "Update Settings";
+"Alert.Location.Title" = "Location Services off";
+"Alert.Location.Message" = "GoodWeather needs location services turned on to display user location. Please update your location services settinds in your Settings -> Privacy -> Location Services.";

@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  assignment
+
+  Created by Martin Miklas on 27/01/2021.
+  
+*/
+
+NSLocationAlwaysAndWhenInUseUsageDescription = "GoodWeather potrebuje povolenie Lokalizačných služieb na určenie vašej polohy.";
+NSLocationWhenInUseUsageDescription = "GoodWeather potrebuje povolenie Lokalizačných služieb na určenie vašej polohy.";

@@ -33,7 +33,7 @@ class SearchViewController: UITableViewController {
         // SearchController Setup
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.placeholder = Localize.Search.Placeholder
         navigationItem.searchController = searchController
         definesPresentationContext = true
         searchController.searchBar.delegate = self
