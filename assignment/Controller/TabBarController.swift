@@ -82,7 +82,7 @@ class TabBarController: UITabBarController {
     }
     
     // Get list from CoreData and update bardge value
-    func updateBadgeValue() {
+    fileprivate func updateBadgeValue() {
         let list = CoreDataManager.shared.fetchLocationList()
         badgeValue = list.count
     }

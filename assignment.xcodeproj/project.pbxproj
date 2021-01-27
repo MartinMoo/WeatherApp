@@ -35,7 +35,7 @@
 		F3B28E0D25BC35C600757AEF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E0C25BC35C600757AEF /* TabBarController.swift */; };
 		F3B28E1025BC396300757AEF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E0F25BC396300757AEF /* SearchViewController.swift */; };
 		F3B28E1325BC397B00757AEF /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */; };
-		F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1625BC418F00757AEF /* ColorExtension.swift */; };
+		F3B28E1725BC418F00757AEF /* UIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1625BC418F00757AEF /* UIExtension.swift */; };
 		F3B28E1E25BC6AB200757AEF /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E1D25BC6AB200757AEF /* LocationService.swift */; };
 		F3B28E2225BCCCEB00757AEF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B28E2125BCCCEB00757AEF /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
@@ -72,7 +72,7 @@
 		F3B28E0C25BC35C600757AEF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F3B28E0F25BC396300757AEF /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F3B28E1225BC397B00757AEF /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
-		F3B28E1625BC418F00757AEF /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		F3B28E1625BC418F00757AEF /* UIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtension.swift; sourceTree = "<group>"; };
 		F3B28E1D25BC6AB200757AEF /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		F3B28E2125BCCCEB00757AEF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -181,7 +181,7 @@
 		F3B28E1525BC417700757AEF /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				F3B28E1625BC418F00757AEF /* ColorExtension.swift */,
+				F3B28E1625BC418F00757AEF /* UIExtension.swift */,
 				F32CC6E525BE2C870097B4F4 /* StringExtension.swift */,
 				F33D95DA25BFB536000A8DFE /* LocationExtension.swift */,
 				F39CE43225C0E7900048BD04 /* LocalizationExtension.swift */,
@@ -292,7 +292,7 @@
 				F33D95D825BFA477000A8DFE /* FavoriteLocationCell.swift in Sources */,
 				F32CC74225BF6AAD0097B4F4 /* FavoriteLocation+CoreDataProperties.swift in Sources */,
 				F32CC73425BF67960097B4F4 /* Model.xcdatamodeld in Sources */,
-				F3B28E1725BC418F00757AEF /* ColorExtension.swift in Sources */,
+				F3B28E1725BC418F00757AEF /* UIExtension.swift in Sources */,
 				F33D95DB25BFB536000A8DFE /* LocationExtension.swift in Sources */,
 				F39CE43F25C0ED510048BD04 /* LocalizableConstants.swift in Sources */,
 				F32CC6D625BDDA880097B4F4 /* SearchLocation.swift in Sources */,

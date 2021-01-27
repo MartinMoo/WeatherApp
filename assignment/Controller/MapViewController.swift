@@ -148,7 +148,7 @@ class MapViewController: UIViewController {
     }
     
     // Show info for no connection
-    func showNoConnectionInfo() {
+    fileprivate func showNoConnectionInfo() {
         noConnectionLabel.isHidden = false
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
@@ -249,11 +249,11 @@ class MapViewController: UIViewController {
         
         for location in favoriteLocations {
             // Place Annotation on map
-            mapView.addAnnotation(createAnnotation(cityFromCoreData: location.name, latitude: location.latitude, longitude: location.longitude))
+            mapView.addAnnotation(createAnnotation(cityFromCoreData: location.name, countryFromCoreData: location.country, latitude: location.latitude, longitude: location.longitude))
         }
     }
     
-    fileprivate func createAnnotation(cityFromCoreData: String? = nil, latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
+    fileprivate func createAnnotation(cityFromCoreData: String? = nil, countryFromCoreData: String? = nil, latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
         // Convert location co CLLocationCoordinate2D
         let locationCoordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let locationForCity = CLLocation(latitude: latitude, longitude: longitude)
@@ -261,12 +261,14 @@ class MapViewController: UIViewController {
         // Init pin
         let marker: MKPointAnnotation = MKPointAnnotation()
 
-        if let city = cityFromCoreData {
+        if let city = cityFromCoreData, let country = countryFromCoreData {
             marker.title = city
+            marker.subtitle = country
         } else {
-            locationForCity.fetchCity(completion: { (city, error) in
-                guard let city = city, error == nil else { return }
+            locationForCity.fetchCityAndCountry(completion: { (city, country, error) in
+                guard let city = city, let country = country, error == nil else { return }
                 marker.title = city
+                marker.subtitle = country
             })
         }
         
@@ -310,11 +312,17 @@ extension MapViewController: MKMapViewDelegate {
         
         // Get coordinates from annotation and pass it to next viewController
         vc.locationCoordinates = view.annotation?.coordinate
-        if let vcTitle = view.annotation?.title {
-            vc.title = vcTitle
+        if let vcCity = view.annotation?.title!, let vcCountry = view.annotation?.subtitle! {
+            vc.title = vcCity
+            vc.locationName = vcCity
+            vc.locationCountry = vcCountry
         }
 
-        navigationController?.pushViewController(vc, animated: true)
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
+        } else {
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 

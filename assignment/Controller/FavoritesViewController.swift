@@ -15,7 +15,6 @@ class FavoritesViewController: UIViewController {
     let cellsPerRow = 2
     var locations: [FavoriteLocation] = []
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var isCollectionLoaded = false
 
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
@@ -32,7 +31,6 @@ class FavoritesViewController: UIViewController {
             return collectionView
         }()
 
-
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
@@ -48,7 +46,7 @@ class FavoritesViewController: UIViewController {
         collectionView.reloadData()
         
         NetStatus.shared.netStatusChangeHandler = {
-            if !self.isCollectionLoaded  {
+            if NetStatus.shared.isConnected {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
@@ -59,10 +57,15 @@ class FavoritesViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
+    fileprivate func setupUI() {
+        
+    }
+
+    
     // Reload CollectionView with updated data from CoreData
     @objc func contextObjectsDidChange(_ notification: Notification) {
         locations = CoreDataManager.shared.fetchLocationList()
-        collectionView.reloadData()
+        self.collectionView.reloadData()
     }
 }
 
@@ -89,6 +92,8 @@ extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.title = locations[indexPath.row].name
+        vc.locationName = locations[indexPath.row].name
+        vc.locationCountry = locations[indexPath.row].country
         vc.locationCoordinates = CLLocationCoordinate2D(latitude: locations[indexPath.row].latitude, longitude: locations[indexPath.row].longitude)
         navigationController?.pushViewController(vc, animated: true)
     }

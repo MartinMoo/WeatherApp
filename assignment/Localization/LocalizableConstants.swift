@@ -23,6 +23,8 @@ struct Localize {
     
     struct Favorites {
         static let Title = "Favorites.Title".localized();
+        static let Latitude = "Favorites.Latitude".localized();
+        static let Longitude = "Favorites.Longitude".localized();
     }
     
     struct Detail {

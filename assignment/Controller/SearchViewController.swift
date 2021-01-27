@@ -33,7 +33,7 @@ class SearchViewController: UITableViewController {
     }
     
     //MARK: - Methods for UI
-    func setupSearchController() {
+    fileprivate func setupSearchController() {
         // No connection Info label
         noConnectionLabel.textColor = UIColor.Custom.red
         noConnectionLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -75,7 +75,7 @@ class SearchViewController: UITableViewController {
     }
     
     // Show info for no connection
-    func showNoConnectionInfo() {
+    fileprivate func showNoConnectionInfo() {
         noConnectionLabel.isHidden = false
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
@@ -149,6 +149,7 @@ extension SearchViewController {
     
     // Selected row in TableView
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         let vc = DetailViewController()
         var coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D()
         
@@ -159,7 +160,11 @@ extension SearchViewController {
 
         vc.title = matchingLocations[indexPath.row].name
         vc.view.backgroundColor = .systemBackground
-
-        navigationController?.pushViewController(vc, animated: true)
+        
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
+        } else {
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

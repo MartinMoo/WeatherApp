@@ -63,11 +63,12 @@ struct CoreDataManager {
         }
     }
 
-    // Within one city only one marker
-    func deleteLocation(name: String, country: String, lat: Double, long: Double) {
+    func deleteLocation(lat: Double, long: Double) {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        fetchRequest.predicate = NSPredicate(format: "((name == %@) AND (country == %@)) OR ((latitude == %@) AND (longitude == %@))", name as NSString, country as NSString, lat as NSNumber, long as NSNumber)
+        let predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
+        
+        fetchRequest.predicate = predicate
         
         do {
             let locationsToRemove = try context.fetch(fetchRequest) as [NSManagedObject]
@@ -84,11 +85,13 @@ struct CoreDataManager {
         }
     }
     
-    // Within one city only one marker
-    func locationExists(name: String, country: String, lat: Double, long: Double) -> Bool {
+    // Check only the same location ( different parts of cities, especially big ones have different forecast)
+    func locationExists(lat: Double, long: Double) -> Bool {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        fetchRequest.predicate = NSPredicate(format: "((name == %@) AND (country == %@)) OR ((latitude == %@) AND (longitude == %@))",name as NSString, country as NSString, lat as NSNumber, long as NSNumber)
+        let predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
+        
+        fetchRequest.predicate = predicate
         
         var results: [NSManagedObject] = []
 

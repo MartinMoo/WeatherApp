@@ -15,6 +15,7 @@ class DetailViewController: UIViewController {
     var locationCoordinates: CLLocationCoordinate2D?
     var locationName: String = ""
     var locationCountry: String = ""
+    var dataLoaded = false
     
     var latitude: Double = 0
     var longitude: Double = 0
@@ -24,6 +25,7 @@ class DetailViewController: UIViewController {
     var forecastDays: [DailyModel] = []
 
     let tableView = UITableView()
+    var spinnerView = UIActivityIndicatorView()
     let header = DetailViewTableHead(frame: CGRect.zero)
     let scrollView = UIScrollView()
     let noConnectionLabel = UILabel()
@@ -37,6 +39,8 @@ class DetailViewController: UIViewController {
     //MARK: - Update Header and TableView
     var currentWeather: CurrentWeather? {
         didSet {
+            dataLoaded = true
+            self.removeSpinner()
             if let data = currentWeather { // Pass updated data to Header view
                 header.currentWeather = data
                 UIView.animate(withDuration: 0.3) {
@@ -72,17 +76,25 @@ class DetailViewController: UIViewController {
 
         self.tableView.register(DetailViewTableCell.self, forCellReuseIdentifier: "DetailCell")
         
-        
-        setupUI()
         checkCoordinatesAndUpdateUI()
+        setupUI()
 
         // Notification if there was a change in CoreData
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
         
         checkIfLocationExistInFavorites()
+        
+        NetStatus.shared.netStatusChangeHandler = {
+            if !NetStatus.shared.isConnected {
+                self.showNoConnectionInfo()
+            } else {
+                self.hideNoConnectionInfo()
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if !NetStatus.shared.isConnected {
             showNoConnectionInfo()
         }
@@ -141,15 +153,44 @@ class DetailViewController: UIViewController {
         
     }
     
-    // Show info for no connection
-    func showNoConnectionInfo() {
-        noConnectionLabel.isHidden = false
+    fileprivate func showSpinner() {
+        if !dataLoaded {
+            spinnerView.style = .large
+            spinnerView.translatesAutoresizingMaskIntoConstraints = false
+            spinnerView.hidesWhenStopped = true
+            spinnerView.startAnimating()
 
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
-            self.noConnectionLabel.alpha = 1
-        } completion: { (true) in
-            UIView.animate(withDuration: 0.4, delay: 3, options: .curveEaseOut) {
+            self.scrollView.addSubview(spinnerView)
+
+            spinnerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 140).isActive = true
+            spinnerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        }
+    }
+    
+    fileprivate func removeSpinner() {
+        spinnerView.stopAnimating()
+    }
+    
+    // Show info if no internet connection
+    fileprivate func showNoConnectionInfo() {
+        DispatchQueue.main.async {
+            self.removeSpinner()
+            self.noConnectionLabel.isHidden = false
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
+                self.noConnectionLabel.alpha = 1
+            }
+        }
+    }
+    
+    // Show info if no internet connection
+    fileprivate func hideNoConnectionInfo() {
+        DispatchQueue.main.async {
+            self.noConnectionLabel.isHidden = false
+            self.getWeatherData()
+            UIView.animate(withDuration: 0.3) {
                 self.noConnectionLabel.alpha = 0
+            } completion: { (true) in
+                self.noConnectionLabel.isHidden = true
             }
         }
     }
@@ -165,6 +206,7 @@ class DetailViewController: UIViewController {
                 self.locationName = city
                 self.locationCountry = country
                 self.title = self.locationName
+                self.checkIfLocationExistInFavorites()
             }
         }
         getWeatherData()
@@ -179,12 +221,13 @@ class DetailViewController: UIViewController {
     }
     
     @objc func removeLocationFromCoreData(sender: UIButton) {
-        CoreDataManager.shared.deleteLocation(name: locationName, country: locationCountry, lat: latitude, long: longitude)
+        CoreDataManager.shared.deleteLocation( lat: latitude, long: longitude)
         checkIfLocationExistInFavorites()
     }
     
     fileprivate func checkIfLocationExistInFavorites() {
-        if CoreDataManager.shared.locationExists(name: locationName, country: locationCountry, lat: latitude, long: longitude) {
+
+        if CoreDataManager.shared.locationExists(lat: latitude, long: longitude) {
             favoriteButton.setTitle(Localize.Detail.RemovesFromFavorites, for: .normal)
             favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
             favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
@@ -203,7 +246,10 @@ class DetailViewController: UIViewController {
 
     //MARK: - Get weather data
     fileprivate func getWeatherData() {
-        weatherManager.fetchWeather(latitude: latitude, longitude: longitude)
+        if NetStatus.shared.isConnected {
+            self.showSpinner()
+            weatherManager.fetchWeather(latitude: latitude, longitude: longitude)
+        }
     }
 }
 

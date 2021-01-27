@@ -36,13 +36,25 @@ class FavoriteLocationCell: UICollectionViewCell {
 
             // Update labels and map with location names based on specified coordinates
             placemark.fetchCityAndCountry { city, country, error in
-                guard let city = city, let country = country, error == nil else { return }
+                guard let city = city, let country = country, error == nil else {
+                    if NetStatus.shared.isConnected {
+                        let latString = String(format: "%.3f", coordinates.latitude)
+                        self.cityLabel.text = Localize.Favorites.Latitude + " " + latString
+                        
+                        let lonString = String(format: "%.3f", coordinates.longitude)
+                        self.countryLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                        self.countryLabel.text = Localize.Favorites.Longitude + " " +  lonString
+                    }
+                    return
+                }
                 self.cityLabel.text = city
                 self.countryLabel.text = country
+            }
+            if NetStatus.shared.isConnected {
                 self.zoomToLocation(centerCooridnate: location2D, zoomInKm: zoomInKm)
-                UIView.animate(withDuration: 0.4) {
-                    self.viewToBlur.alpha = 1
-                }
+            }
+            UIView.animate(withDuration: 0.4) {
+                self.viewToBlur.alpha = 1
             }
         }
     }

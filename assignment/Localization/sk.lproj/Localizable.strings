@@ -17,6 +17,8 @@
 "Search.Placeholder" = "Hľadať";
 
 "Favorites.Title" = "Obľúbené";
+"Favorites.Latitude" = "Z.š.:";
+"Favorites.Longitude" = "Z.d.:";
 
 "Detail.FeelsLike" = "Pocitová teplota ";
 "Detail.AddToFavorites" = "Pridaj do obľúbených";

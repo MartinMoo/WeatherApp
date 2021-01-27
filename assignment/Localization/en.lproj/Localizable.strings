@@ -17,6 +17,8 @@
 "Search.Placeholder" = "Search";
 
 "Favorites.Title" = "Favorites";
+"Favorites.Latitude" = "Lat:";
+"Favorites.Longitude" = "Lon:";
 
 "Detail.FeelsLike" = "Feels like ";
 "Detail.AddToFavorites" = "Add to favorites";
