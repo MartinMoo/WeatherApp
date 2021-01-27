@@ -26,6 +26,7 @@ class DetailViewController: UIViewController {
     let tableView = UITableView()
     let header = DetailViewTableHead(frame: CGRect.zero)
     let scrollView = UIScrollView()
+    let noConnectionLabel = UILabel()
     let favoriteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +52,6 @@ class DetailViewController: UIViewController {
                 currentWeather = data.current
                 UIView.animate(withDuration: 0.3, delay: 0.2) {
                     self.tableView.alpha = 1
-                    self.favoriteButton.alpha = 1
                 }
             }
         }
@@ -72,11 +72,20 @@ class DetailViewController: UIViewController {
 
         self.tableView.register(DetailViewTableCell.self, forCellReuseIdentifier: "DetailCell")
         
-        checkCoordinatesAndUpdateUI()
+        
         setupUI()
+        checkCoordinatesAndUpdateUI()
 
         // Notification if there was a change in CoreData
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        
+        checkIfLocationExistInFavorites()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
+        }
     }
      
     //MARK: - Methods for UI
@@ -84,15 +93,31 @@ class DetailViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         header.translatesAutoresizingMaskIntoConstraints = false
+        
+        noConnectionLabel.textColor = UIColor.Custom.red
+        noConnectionLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        noConnectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        noConnectionLabel.numberOfLines = 0
+        noConnectionLabel.alpha = 0
+        noConnectionLabel.isHidden = true
+        noConnectionLabel.text = Localize.Alert.Net.NoConnection
 
         header.alpha = 0
         tableView.alpha = 0
-        favoriteButton.alpha = 0
         
         view.addSubview(scrollView)
         scrollView.addSubview(header)
         scrollView.addSubview(tableView)
         scrollView.addSubview(favoriteButton)
+        
+        view.addSubview(noConnectionLabel)
+        view.bringSubviewToFront(noConnectionLabel)
+        
+        noConnectionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        noConnectionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+        noConnectionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noConnectionLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        noConnectionLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
         
         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -116,6 +141,19 @@ class DetailViewController: UIViewController {
         
     }
     
+    // Show info for no connection
+    func showNoConnectionInfo() {
+        noConnectionLabel.isHidden = false
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
+            self.noConnectionLabel.alpha = 1
+        } completion: { (true) in
+            UIView.animate(withDuration: 0.4, delay: 3, options: .curveEaseOut) {
+                self.noConnectionLabel.alpha = 0
+            }
+        }
+    }
+    
     fileprivate func checkCoordinatesAndUpdateUI() {
         // Check Coordinates and update local coordinates and location name
         if let checkedLatitude = locationCoordinates?.latitude, let checkedLongitude = locationCoordinates?.longitude {
@@ -127,7 +165,6 @@ class DetailViewController: UIViewController {
                 self.locationName = city
                 self.locationCountry = country
                 self.title = self.locationName
-                self.checkIfLocationExistInFavorites()
             }
         }
         getWeatherData()

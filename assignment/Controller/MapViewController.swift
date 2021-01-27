@@ -42,6 +42,9 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -246,21 +249,26 @@ class MapViewController: UIViewController {
         
         for location in favoriteLocations {
             // Place Annotation on map
-            mapView.addAnnotation(createAnnotation(latitude: location.latitude, longitude: location.longitude))
+            mapView.addAnnotation(createAnnotation(cityFromCoreData: location.name, latitude: location.latitude, longitude: location.longitude))
         }
     }
     
-    fileprivate func createAnnotation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
+    fileprivate func createAnnotation(cityFromCoreData: String? = nil, latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
         // Convert location co CLLocationCoordinate2D
         let locationCoordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let locationForCity = CLLocation(latitude: latitude, longitude: longitude)
         
         // Init pin
         let marker: MKPointAnnotation = MKPointAnnotation()
-        locationForCity.fetchCity(completion: { (city, error) in
-            guard let city = city, error == nil else { return }
+
+        if let city = cityFromCoreData {
             marker.title = city
-        })
+        } else {
+            locationForCity.fetchCity(completion: { (city, error) in
+                guard let city = city, error == nil else { return }
+                marker.title = city
+            })
+        }
         
         marker.coordinate = locationCoordinates
         return marker
@@ -302,11 +310,11 @@ extension MapViewController: MKMapViewDelegate {
         
         // Get coordinates from annotation and pass it to next viewController
         vc.locationCoordinates = view.annotation?.coordinate
-        if NetStatus.shared.isConnected {
-            navigationController?.pushViewController(vc, animated: true)
-        } else {
-            showNoConnectionInfo()
+        if let vcTitle = view.annotation?.title {
+            vc.title = vcTitle
         }
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
