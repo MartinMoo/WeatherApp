@@ -38,5 +38,8 @@ struct Localize {
             static let Title = "Alert.Location.Title".localized();
             static let Message = "Alert.Location.Message".localized();
         }
+        struct Net {
+            static let NoConnection = "Alert.Net.NoConnection".localized();
+        }
     }
 }

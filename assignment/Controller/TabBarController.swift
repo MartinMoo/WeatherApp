@@ -8,6 +8,7 @@
 import UIKit
 
 class TabBarController: UITabBarController {
+    //MARK: - Properties
     var badgeValue: Int = 0 {
         didSet { // Update the Badge for favorites locations
             if badgeValue != 0 {
@@ -17,7 +18,8 @@ class TabBarController: UITabBarController {
             }
         }
     }
-
+    
+    //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,6 +72,8 @@ class TabBarController: UITabBarController {
 
         // Notification if there was a change in CoreData
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
+        
+        NetStatus.shared.startMonitoring()
     }
     
     // Update badge value on notification from observer

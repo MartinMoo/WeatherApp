@@ -8,15 +8,7 @@
 import UIKit
 
 class SearchViewTableCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCellView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    //MARK: - Properties
     // Set content to labels
     var location: Location? {
         didSet {
@@ -63,6 +55,17 @@ class SearchViewTableCell: UITableViewCell {
         return imageView
     }()
     
+    //MARK: - Init
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCellView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Implementation
     fileprivate func setupCellView() {
         
         // Add subviews

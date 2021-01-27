@@ -8,19 +8,7 @@
 import UIKit
 
 class DetailViewTableHead: UIView {
-    
-    override init(frame: CGRect = .zero) {
-        super.init(frame: frame)
-        if frame == .zero {
-            translatesAutoresizingMaskIntoConstraints = false
-        }
-        setupView()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
+    //MARK: - Properties
     // Set content to labels
     var currentWeather: CurrentWeather? {
         didSet {
@@ -62,7 +50,21 @@ class DetailViewTableHead: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    //MARK: - Init
+    override init(frame: CGRect = .zero) {
+        super.init(frame: frame)
+        if frame == .zero {
+            translatesAutoresizingMaskIntoConstraints = false
+        }
+        setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
  
+    //MARK: - Implementation
     fileprivate func setupView() {
 
         // Add subviews

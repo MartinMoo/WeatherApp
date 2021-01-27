@@ -9,7 +9,9 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController {
+    //MARK: - Properties
     let mapView = MKMapView()
+    let noConnectionLabel = UILabel()
     let zoomLevel: Double = 5000 // in meters: 5000  = 5x5km map zoom
     var currentMapType: MKMapType = .standard {
         didSet {
@@ -48,7 +50,7 @@ class MapViewController: UIViewController {
     }
 
     //MARK: - UI Methods
-    func setupUI() { // Boilerplate, no UIView extensions...
+    func setupUI() {
 
         let mapNavigationContainer: UIView = {
             let view = UIView()
@@ -80,16 +82,32 @@ class MapViewController: UIViewController {
             return button
         }()
         
+        noConnectionLabel.textColor = UIColor.Custom.red
+        noConnectionLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        noConnectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        noConnectionLabel.numberOfLines = 0
+        noConnectionLabel.alpha = 0
+        noConnectionLabel.isHidden = true
+        noConnectionLabel.text = Localize.Alert.Net.NoConnection
+        
+        // Gesture Recognizer for adding markers on map
         let longPress: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
         longPress.addTarget(self, action: #selector(didAddAnnotation))
         mapView.addGestureRecognizer(longPress)
         
         view.backgroundColor = .systemBackground
         view.addSubview(mapView)
+        view.addSubview(noConnectionLabel)
         view.addSubview(mapNavigationContainer)
         mapNavigationContainer.addSubview(mapTypeContainer)
         mapNavigationContainer.addSubview(currentPositionButton)
         mapTypeContainer.addSubview(mapTypeSegmentedControl)
+        
+        noConnectionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        noConnectionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+        noConnectionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noConnectionLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        noConnectionLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
@@ -126,6 +144,19 @@ class MapViewController: UIViewController {
         
     }
     
+    // Show info for no connection
+    func showNoConnectionInfo() {
+        noConnectionLabel.isHidden = false
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
+            self.noConnectionLabel.alpha = 1
+        } completion: { (true) in
+            UIView.animate(withDuration: 0.4, delay: 3, options: .curveEaseOut) {
+                self.noConnectionLabel.alpha = 0
+            }
+        }
+    }
+    
     //MARK: - Button Actions Methods
     // Switch map style
     @objc fileprivate func segmentedControlAction(sender: UISegmentedControl) {
@@ -141,11 +172,8 @@ class MapViewController: UIViewController {
     
     // Animate Center to User location button and call zoom to location method
     @objc fileprivate func didTapLocationAction(sender: UIButton) {
-        sender.backgroundColor = .tertiarySystemBackground
-        sender.layoutIfNeeded()
-        UIView.animate(withDuration: 0.3) {
-            sender.backgroundColor = .systemBackground
-        }
+        
+        // Check if Location Service is authorized
         switch CLLocationManager.authorizationStatus() {
             case .notDetermined:
                 presentLocationPermissionAlert()
@@ -157,7 +185,12 @@ class MapViewController: UIViewController {
             default:
                 break
         }
-
+        
+        sender.backgroundColor = .tertiarySystemBackground
+        sender.layoutIfNeeded()
+        UIView.animate(withDuration: 0.3) {
+            sender.backgroundColor = .systemBackground
+        }
     }
     
     @objc fileprivate func didAddAnnotation(sender: UILongPressGestureRecognizer) {
@@ -263,17 +296,19 @@ extension MapViewController: LocationServiceDelegate {
 
 
 extension MapViewController: MKMapViewDelegate {
-    
+    // Annotation Selected, push DetailViewController
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         let vc = DetailViewController()
         
         // Get coordinates from annotation and pass it to next viewController
         vc.locationCoordinates = view.annotation?.coordinate
-        navigationController?.pushViewController(vc, animated: true)
+        if NetStatus.shared.isConnected {
+            navigationController?.pushViewController(vc, animated: true)
+        } else {
+            showNoConnectionInfo()
+        }
     }
 }
 
-extension MapViewController: CLLocationManagerDelegate {
-    
-}
+extension MapViewController: CLLocationManagerDelegate {}
 

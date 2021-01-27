@@ -8,11 +8,13 @@
 import UIKit
 import CoreLocation
 import MapKit
+import Network
 
 class DetailViewController: UIViewController {
-    
+    //MARK: - Properties
     var locationCoordinates: CLLocationCoordinate2D?
     var locationName: String = ""
+    var locationCountry: String = ""
     
     var latitude: Double = 0
     var longitude: Double = 0
@@ -59,19 +61,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Check Coordinates and update local coordinates and location name
-        if let checkedLatitude = locationCoordinates?.latitude, let checkedLongitude = locationCoordinates?.longitude {
-            latitude = checkedLatitude
-            longitude = checkedLongitude
-            let placemark = CLLocation(latitude: checkedLatitude, longitude: checkedLongitude)
-            placemark.fetchCity { (city, error) in
-                guard let city = city, error == nil else { return }
-                self.locationName = city
-                self.title = self.locationName
-                self.checkIfLocationExistInFavorites()
-            }
-        }
-
         self.view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
         
@@ -80,14 +69,16 @@ class DetailViewController: UIViewController {
         tableView.isScrollEnabled = false
 
         weatherManager.delegate = self
-        getWeatherData()
-        
+
         self.tableView.register(DetailViewTableCell.self, forCellReuseIdentifier: "DetailCell")
         
+        checkCoordinatesAndUpdateUI()
         setupUI()
+
+        // Notification if there was a change in CoreData
+        NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
-    
-    
+     
     //MARK: - Methods for UI
     fileprivate func setupUI() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -125,21 +116,38 @@ class DetailViewController: UIViewController {
         
     }
     
+    fileprivate func checkCoordinatesAndUpdateUI() {
+        // Check Coordinates and update local coordinates and location name
+        if let checkedLatitude = locationCoordinates?.latitude, let checkedLongitude = locationCoordinates?.longitude {
+            latitude = checkedLatitude
+            longitude = checkedLongitude
+            let placemark = CLLocation(latitude: checkedLatitude, longitude: checkedLongitude)
+            placemark.fetchCityAndCountry { (city, country, error) in
+                guard let city = city, let country = country, error == nil else { return }
+                self.locationName = city
+                self.locationCountry = country
+                self.title = self.locationName
+                self.checkIfLocationExistInFavorites()
+            }
+        }
+        getWeatherData()
+    }
+    
     //TODO: Add Two Linees Large Title/ compact in navigationbar
     
     //MARK: - Methods for add/remove favorites locations to CoreData
     @objc func addLocationToCoreData(sender: UIButton) {
-        CoreDataManager.shared.addLocation(name: locationName, longitude: longitude, latitude: latitude)
+        CoreDataManager.shared.addLocation(name: locationName, country: locationCountry, longitude: longitude, latitude: latitude)
         checkIfLocationExistInFavorites()
     }
     
     @objc func removeLocationFromCoreData(sender: UIButton) {
-        CoreDataManager.shared.deleteLocation(lat: latitude, long: longitude)
+        CoreDataManager.shared.deleteLocation(name: locationName, country: locationCountry, lat: latitude, long: longitude)
         checkIfLocationExistInFavorites()
     }
     
     fileprivate func checkIfLocationExistInFavorites() {
-        if CoreDataManager.shared.locationExists(name: locationName, lat: latitude, long: longitude) {
+        if CoreDataManager.shared.locationExists(name: locationName, country: locationCountry, lat: latitude, long: longitude) {
             favoriteButton.setTitle(Localize.Detail.RemovesFromFavorites, for: .normal)
             favoriteButton.setTitleColor(UIColor.Custom.red, for: .normal)
             favoriteButton.addTarget(self, action: #selector(removeLocationFromCoreData), for: .touchUpInside)
@@ -148,6 +156,11 @@ class DetailViewController: UIViewController {
             favoriteButton.setTitleColor(UIColor.Custom.purple, for: .normal)
             favoriteButton.addTarget(self, action: #selector(addLocationToCoreData), for: .touchUpInside)
         }
+    }
+    
+    // Update buttons for adding/removing location (If location removed in detail view from favorites/search)
+    @objc func contextObjectsDidChange(_ notification: Notification) {
+        checkIfLocationExistInFavorites()
     }
     
 

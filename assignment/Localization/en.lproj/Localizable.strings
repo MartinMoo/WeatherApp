@@ -18,7 +18,7 @@
 
 "Favorites.Title" = "Favorites";
 
-"Detail.FeelsLike" = "Feels like";
+"Detail.FeelsLike" = "Feels like ";
 "Detail.AddToFavorites" = "Add to favorites";
 "Detail.RemovesFromFavorites" = "Remove from favorites";
 
@@ -26,3 +26,6 @@
 "Alert.UpdateSettings" = "Update Settings";
 "Alert.Location.Title" = "Location Services off";
 "Alert.Location.Message" = "GoodWeather needs location services turned on to display user location. Please update your location services settinds in your Settings -> Privacy -> Location Services.";
+"Alert.Net.NoConnection" = "No internet connection";
+
+

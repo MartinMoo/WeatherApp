@@ -9,8 +9,10 @@ import UIKit
 import MapKit
 
 class SearchViewController: UITableViewController {
+    //MARK: - Properties
     var matchingLocations: [MKMapItem] = []
     var mapView: MKMapView? = nil
+    let noConnectionLabel = UILabel()
     let searchController = UISearchController(searchResultsController: nil)
     
     var isSearchBarEmpty: Bool {
@@ -26,10 +28,30 @@ class SearchViewController: UITableViewController {
         // Register custom cell for table view
         self.tableView.register(SearchViewTableCell.self, forCellReuseIdentifier: "Cell")
         setupSearchController()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(sender:)), name:UIResponder.keyboardWillShowNotification, object: nil);
     }
     
     //MARK: - Methods for UI
     func setupSearchController() {
+        // No connection Info label
+        noConnectionLabel.textColor = UIColor.Custom.red
+        noConnectionLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        noConnectionLabel.translatesAutoresizingMaskIntoConstraints = false
+        noConnectionLabel.numberOfLines = 0
+        noConnectionLabel.alpha = 0
+        noConnectionLabel.isHidden = true
+        noConnectionLabel.text = Localize.Alert.Net.NoConnection
+        
+        view.addSubview(noConnectionLabel)
+        view.bringSubviewToFront(noConnectionLabel)
+        
+        noConnectionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2).isActive = true
+        noConnectionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 40).isActive = true
+        noConnectionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noConnectionLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        noConnectionLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
+        
         // SearchController Setup
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -43,6 +65,26 @@ class SearchViewController: UITableViewController {
         searchController.searchBar.backgroundImage = UIImage()
         searchController.searchBar.tintColor = UIColor.Custom.purple
         searchController.searchBar.searchTextField.leftView?.tintColor = UIColor.Custom.purple
+    }
+    
+    //MARK: - Keyboard lifecycle
+    @objc func keyboardWillShow(sender: NSNotification) {
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
+        }
+    }
+    
+    // Show info for no connection
+    func showNoConnectionInfo() {
+        noConnectionLabel.isHidden = false
+
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
+            self.noConnectionLabel.alpha = 1
+        } completion: { (true) in
+            UIView.animate(withDuration: 0.4, delay: 3, options: .curveEaseOut) {
+                self.noConnectionLabel.alpha = 0
+            }
+        }
     }
 }
 
@@ -77,6 +119,12 @@ extension SearchViewController: UISearchBarDelegate {
         if isSearchBarEmpty {
             matchingLocations = []
             self.tableView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !NetStatus.shared.isConnected {
+            showNoConnectionInfo()
         }
     }
 }

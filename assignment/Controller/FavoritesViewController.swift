@@ -7,12 +7,15 @@
 
 import UIKit
 import CoreLocation
+import Network
 
 class FavoritesViewController: UIViewController {
+    //MARK: - Properties
     let inset:CGFloat = 15
     let cellsPerRow = 2
     var locations: [FavoriteLocation] = []
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var isCollectionLoaded = false
 
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
@@ -44,11 +47,19 @@ class FavoritesViewController: UIViewController {
         locations = CoreDataManager.shared.fetchLocationList()
         collectionView.reloadData()
         
+        NetStatus.shared.netStatusChangeHandler = {
+            if !self.isCollectionLoaded  {
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+        
         // Notification if there was a change in CoreData
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
-    // Update badge value on notification from observer
+    // Reload CollectionView with updated data from CoreData
     @objc func contextObjectsDidChange(_ notification: Notification) {
         locations = CoreDataManager.shared.fetchLocationList()
         collectionView.reloadData()
@@ -63,8 +74,11 @@ extension FavoritesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteCell", for: indexPath) as! FavoriteLocationCell
-        let coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D (latitude: locations[indexPath.row].latitude, longitude: locations[indexPath.row].longitude)
+        let favoriteLocation = locations[indexPath.row]
+        let coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D (latitude: favoriteLocation .latitude, longitude: favoriteLocation .longitude)
         cell.coordinates = coordinates
+        cell.cityName = favoriteLocation.name
+        cell.countryName = favoriteLocation.country
         return cell
     }
 }
@@ -86,5 +100,4 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         let size = CGFloat((Float(view.frame.size.width) - Float(inset) * (Float(cellsPerRow) + 1)) / Float(cellsPerRow))
         return CGSize(width: size, height: size)
     }
-    
 }

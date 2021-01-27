@@ -8,15 +8,7 @@
 import UIKit
 
 class DetailViewTableCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupCellView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    //MARK: - Properties
     // Weather condition id code to SF Symbol name
     var conditionName: String {
         switch conditionId{
@@ -63,13 +55,13 @@ class DetailViewTableCell: UITableViewCell {
             if #available(iOS 14, *) { // iOS 14 up, icons sholud be multicolor
                 image = UIImage(systemName: conditionName)?.withRenderingMode(.alwaysOriginal)
             } else { // iOS 13 render with tint color
-                image = UIImage(systemName: conditionName)?.withTintColor(UIColor.Custom.blue!, renderingMode: .alwaysOriginal)
+                image = UIImage(systemName: conditionName)?.withTintColor(.label, renderingMode: .alwaysOriginal)
             }
             weatherIcon.image = image?.withAlignmentRectInsets(UIEdgeInsets(top: -5, left: -5, bottom: -5, right: -5))
         }
     }
     
-    // Views init
+    // Views
     let cellView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -116,6 +108,17 @@ class DetailViewTableCell: UITableViewCell {
         return label
     }()
     
+    //MARK: - Init
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupCellView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Implementation
     fileprivate func setupCellView() {
         
         // Add subviews

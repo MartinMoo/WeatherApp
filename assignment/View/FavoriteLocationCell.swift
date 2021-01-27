@@ -10,16 +10,20 @@ import MapKit
 
 class FavoriteLocationCell: UICollectionViewCell {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCellView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    //MARK: - Properties
     // Set content to labels
+    var cityName: String? {
+        didSet {
+            self.cityLabel.text = cityName
+        }
+    }
+    
+    var countryName: String? {
+        didSet {
+            self.countryLabel.text = countryName
+        }
+    }
+    
     var coordinates: CLLocationCoordinate2D? {
         didSet {
             guard let coordinates = coordinates else {
@@ -37,7 +41,7 @@ class FavoriteLocationCell: UICollectionViewCell {
                 self.countryLabel.text = country
                 self.zoomToLocation(centerCooridnate: location2D, zoomInKm: zoomInKm)
                 UIView.animate(withDuration: 0.4) {
-                    self.contentView.alpha = 1
+                    self.viewToBlur.alpha = 1
                 }
             }
         }
@@ -53,7 +57,7 @@ class FavoriteLocationCell: UICollectionViewCell {
     }()
     
     let blurView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.translatesAutoresizingMaskIntoConstraints = false
         return blurEffectView
@@ -81,7 +85,30 @@ class FavoriteLocationCell: UICollectionViewCell {
         return view
     }()
     
+    //MARK: Init
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCellView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Lifecycle methods
+    // Detect change on Dark mode / Light mode and update views
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if traitCollection.userInterfaceStyle == .light {
+            blurView.effect = UIBlurEffect(style: .light)
+        } else {
+            blurView.effect = UIBlurEffect(style: .dark)
+        }
+    }
+    
+    //MARK: - Implementation
     fileprivate func setupCellView() {
+        contentView.backgroundColor = .secondarySystemBackground
+        
         contentView.addSubview(viewToBlur)
         contentView.addSubview(cityLabel)
         contentView.addSubview(countryLabel)
@@ -118,8 +145,15 @@ class FavoriteLocationCell: UICollectionViewCell {
         contentView.layoutIfNeeded()
         contentView.layer.cornerRadius = contentView.frame.size.height / 15
         
+        // Set Blur view according to Dark / Light Mode
+        if traitCollection.userInterfaceStyle == .light {
+            blurView.effect = UIBlurEffect(style: .light)
+        } else {
+            blurView.effect = UIBlurEffect(style: .dark)
+        }
+        
         // Set Cell to be hidden before filling it with content
-        contentView.alpha = 0
+        viewToBlur.alpha = 0
     }
     
     // Zoom map view to specified coordinates

@@ -20,13 +20,14 @@ struct CoreDataManager {
         return container
     }()
     
-    func addLocation(name: String, longitude: Double, latitude: Double) {
+    func addLocation(name: String, country: String, longitude: Double, latitude: Double) {
         let context = persistentContainer.viewContext
         let location = NSEntityDescription.insertNewObject(forEntityName: "FavoriteLocation", into: context)
         
         location.setValue(name, forKey: "name")
         location.setValue(longitude, forKey: "longitude")
         location.setValue(latitude, forKey: "latitude")
+        location.setValue(country, forKey: "country")
         
         do {
             try context.save()
@@ -61,32 +62,12 @@ struct CoreDataManager {
             return true
         }
     }
-    
-    func deleteLocation(name: String) {
+
+    // Within one city only one marker
+    func deleteLocation(name: String, country: String, lat: Double, long: Double) {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        
-        do {
-            let locationList = try context.fetch(fetchRequest)
-            locationList.forEach { (fetchedLocation) in
-                if fetchedLocation.name == name {
-                    context.delete(fetchedLocation)
-                }
-            }
-            do {
-                try context.save()
-            } catch let error {
-                print("Failed to save context: \(error)")
-            }
-        } catch let error {
-            print("Failed to fetch or delete location from context: \(error)")
-        }
-    }
-    
-    func deleteLocation(lat: Double, long: Double) {
-        let context = persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        fetchRequest.predicate = NSPredicate(format: "(latitude == %@) AND (longitude == %@)", lat as NSNumber, long as NSNumber)
+        fetchRequest.predicate = NSPredicate(format: "((name == %@) AND (country == %@)) OR ((latitude == %@) AND (longitude == %@))", name as NSString, country as NSString, lat as NSNumber, long as NSNumber)
         
         do {
             let locationsToRemove = try context.fetch(fetchRequest) as [NSManagedObject]
@@ -103,11 +84,11 @@ struct CoreDataManager {
         }
     }
     
-    func locationExists(name: String, lat: Double, long: Double) -> Bool {
+    // Within one city only one marker
+    func locationExists(name: String, country: String, lat: Double, long: Double) -> Bool {
         let context = persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<FavoriteLocation>(entityName: "FavoriteLocation")
-        print(name)
-        fetchRequest.predicate = NSPredicate(format: "(name == %@) OR (latitude == %@) AND (longitude == %@)",name as NSString, lat as NSNumber, long as NSNumber)
+        fetchRequest.predicate = NSPredicate(format: "((name == %@) AND (country == %@)) OR ((latitude == %@) AND (longitude == %@))",name as NSString, country as NSString, lat as NSNumber, long as NSNumber)
         
         var results: [NSManagedObject] = []
 
