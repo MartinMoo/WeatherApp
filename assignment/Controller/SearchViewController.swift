@@ -24,6 +24,7 @@ class SearchViewController: UITableViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         // Register custom cell for table view
         self.tableView.register(SearchViewTableCell.self, forCellReuseIdentifier: "Cell")
@@ -149,22 +150,21 @@ extension SearchViewController {
     
     // Selected row in TableView
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         let vc = DetailViewController()
-        var coordinates: CLLocationCoordinate2D = CLLocationCoordinate2D()
-        
         if let latitude = matchingLocations[indexPath.row].placemark.location?.coordinate.latitude, let longitude = matchingLocations[indexPath.row].placemark.location?.coordinate.longitude {
-            coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let locationForCity = CLLocation(latitude: latitude, longitude: longitude)
+            locationForCity.fetchCityAndCountry(completion: { (city, country, error) in
+                guard let city = city, let country = country, error == nil else { return }
+                vc.locationCity = city
+                vc.locationCountry = country
+            })
+            let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             vc.locationCoordinates = coordinates
         }
-
-        vc.title = matchingLocations[indexPath.row].name
-        vc.view.backgroundColor = .systemBackground
-        
         if !NetStatus.shared.isConnected {
-            showNoConnectionInfo()
+            self.showNoConnectionInfo()
         } else {
-            navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: false)
         }
     }
 }

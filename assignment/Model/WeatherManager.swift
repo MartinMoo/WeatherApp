@@ -9,15 +9,15 @@
 import Foundation
 import CoreLocation
 
-protocol WeatherManagerDelegate {
+protocol WeatherManagerDelegate: class {
     func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
     func didFailWithError(error: Error)
 }
 
-struct WeatherManager {
+class WeatherManager {
     let weatherURL = "https://api.openweathermap.org/data/2.5/onecall?appid=ff554f01a90bb15acaa4b59c8e15462e&units=metric"
     
-    var delegate: WeatherManagerDelegate?
+    weak var delegate: WeatherManagerDelegate?
 
     func fetchWeather(latitude: Double, longitude: Double) {
         let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)&lang=\(Locale.current.languageCode!)&exclude=minutely,hourly,alerts"

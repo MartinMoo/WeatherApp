@@ -13,7 +13,7 @@ import Network
 class DetailViewController: UIViewController {
     //MARK: - Properties
     var locationCoordinates: CLLocationCoordinate2D?
-    var locationName: String = ""
+    var locationCity: String = ""
     var locationCountry: String = ""
     var dataLoaded = false
     
@@ -35,6 +35,14 @@ class DetailViewController: UIViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16,weight: .semibold)
         return button
     }()
+    
+    // Navbar Titles
+    let largeTitle = UILabel()
+    let smallTitle = UILabel()
+    var titleText = NSMutableAttributedString()
+    var smallTitleText = NSAttributedString()
+    private var navBarObserver: NSKeyValueObservation?
+    var date = ""
     
     //MARK: - Update Header and TableView
     var currentWeather: CurrentWeather? {
@@ -64,10 +72,21 @@ class DetailViewController: UIViewController {
     //MARK: - Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // get the current date and time
+        let currentDateTime = Date()
+
+        // initialize the date formatter and set the style
+        let formatter = DateFormatter()
+        formatter.timeStyle = .none
+        formatter.dateStyle = .medium
+
+        // get the date time String from the date object
+        date = formatter.string(from: currentDateTime)
+
         self.view.backgroundColor = .systemBackground
         tableView.backgroundColor = .systemBackground
-        
+
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
@@ -98,6 +117,17 @@ class DetailViewController: UIViewController {
         if !NetStatus.shared.isConnected {
             showNoConnectionInfo()
         }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
+            // Landscape
+            if size.width > size.height {
+                self.smallTitle.attributedText = smallTitleText
+            } else { // Portrait
+                self.smallTitle.attributedText = titleText
+            }
+            self.view.layoutIfNeeded()
     }
      
     //MARK: - Methods for UI
@@ -151,6 +181,95 @@ class DetailViewController: UIViewController {
         favoriteButton.trailingAnchor.constraint(lessThanOrEqualTo: scrollView.trailingAnchor, constant: 0).isActive = true
         favoriteButton.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -15).isActive = true
         
+        scrollView.alwaysBounceVertical = true
+        
+    }
+    
+    fileprivate func updateStrings() {
+        titleText = NSMutableAttributedString()
+        titleText.append(NSAttributedString(string: date + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold), NSAttributedString.Key.foregroundColor: UIColor.secondaryLabel]))
+
+        titleText.append(NSAttributedString(string: locationCity, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.semibold), NSAttributedString.Key.foregroundColor: UIColor.label]))
+        
+        smallTitleText = NSAttributedString(string: date + " " + locationCity)
+    }
+    
+    fileprivate func setupNavBar() {
+        updateStrings()
+
+        var addedToTitle = false
+        largeTitle.translatesAutoresizingMaskIntoConstraints = false
+
+        // Dirty boy, still issues with it, on bigger screens not showing Large Title first, only after bounce or scroll
+        self.navBarObserver = self.navigationController?.navigationBar.observe(\.bounds, options: [.new], changeHandler: { [weak self] (navigationBar, changes) in // weak self or suspicious memory instances...
+            if let height = changes.newValue?.height {
+                if height > 44 {
+
+                    // Animate on change
+                    self?.largeTitle.isHidden = false
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+                        self?.navigationItem.titleView?.alpha = 0
+                        self?.largeTitle.alpha = 1
+                    } completion: { (true) in
+                        self?.navigationItem.titleView?.isHidden = true
+                    }
+
+                    self?.title = ""
+
+                    //Large Title
+                    if let navBar = self?.navigationController?.navigationBar { // No crashy crashy
+                        for navItem in navBar.subviews { // Crawl through subviews
+                             for itemSubView in navItem.subviews {
+                                 if let largeLabel = itemSubView as? UILabel { // Find the chosen one
+                                    if addedToTitle == false { // Add new view only once
+                                        largeLabel.addSubview(self!.largeTitle)
+                                        self?.largeTitle.topAnchor.constraint(equalTo: largeLabel.topAnchor).isActive = true
+                                        self?.largeTitle.leadingAnchor.constraint(equalTo: largeLabel.leadingAnchor).isActive = true
+                                        self?.largeTitle.widthAnchor.constraint(equalToConstant: ((self?.view.frame.size.width)!) - 30).isActive = true
+                                        self?.largeTitle.attributedText = self?.titleText
+                                        self?.largeTitle.numberOfLines = 0
+                                        addedToTitle = true
+                                    }
+                                 }
+                             }
+                        }
+                    }
+                } else {
+                    self?.navigationItem.titleView?.isHidden = false
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+                        self?.navigationItem.titleView?.alpha = 1
+                        self?.largeTitle.alpha = 0
+                    } completion: { (true) in
+                        self?.largeTitle.isHidden = true
+                    }
+
+                }
+            }
+        })
+
+        // Set small Title
+        smallTitle.backgroundColor = .clear
+        smallTitle.numberOfLines = 2
+        smallTitle.font = UIFont.systemFont(ofSize: 14)
+        smallTitle.textAlignment = .center
+        smallTitle.textColor = .label
+        smallTitle.attributedText = titleText
+        smallTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.navigationItem.titleView = smallTitle
+
+
+        // Small title for landscape
+        if isLandscape() {
+            self.smallTitle.frame.size.width = view.frame.size.height - 90
+            self.smallTitle.attributedText = smallTitleText
+        }
+    }
+    
+    fileprivate func isLandscape() -> Bool {
+        if self.view.frame.size.width > self.view.frame.size.height {
+            return true
+        }
+        return false
     }
     
     fileprivate func showSpinner() {
@@ -203,20 +322,18 @@ class DetailViewController: UIViewController {
             let placemark = CLLocation(latitude: checkedLatitude, longitude: checkedLongitude)
             placemark.fetchCityAndCountry { (city, country, error) in
                 guard let city = city, let country = country, error == nil else { return }
-                self.locationName = city
+                self.locationCity = city
                 self.locationCountry = country
-                self.title = self.locationName
+                self.setupNavBar()
                 self.checkIfLocationExistInFavorites()
             }
         }
         getWeatherData()
     }
     
-    //TODO: Add Two Linees Large Title/ compact in navigationbar
-    
     //MARK: - Methods for add/remove favorites locations to CoreData
     @objc func addLocationToCoreData(sender: UIButton) {
-        CoreDataManager.shared.addLocation(name: locationName, country: locationCountry, longitude: longitude, latitude: latitude)
+        CoreDataManager.shared.addLocation(name: locationCity, country: locationCountry, longitude: longitude, latitude: latitude)
         checkIfLocationExistInFavorites()
     }
     

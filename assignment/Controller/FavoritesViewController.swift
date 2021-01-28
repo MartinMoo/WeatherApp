@@ -20,6 +20,7 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.view.backgroundColor = .systemBackground
         
         collectionView = {
@@ -91,8 +92,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
     // Go to DetailViewController after selecting cell
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.title = locations[indexPath.row].name
-        vc.locationName = locations[indexPath.row].name
+        vc.locationCity = locations[indexPath.row].name
         vc.locationCountry = locations[indexPath.row].country
         vc.locationCoordinates = CLLocationCoordinate2D(latitude: locations[indexPath.row].latitude, longitude: locations[indexPath.row].longitude)
         navigationController?.pushViewController(vc, animated: true)

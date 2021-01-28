@@ -155,7 +155,7 @@ class FavoriteLocationCell: UICollectionViewCell {
         
         // Additional UI changes after main views are rendered and ready to be changed
         contentView.layoutIfNeeded()
-        contentView.layer.cornerRadius = contentView.frame.size.height / 15
+        contentView.layer.cornerRadius = 15
         
         // Set Blur view according to Dark / Light Mode
         if traitCollection.userInterfaceStyle == .light {

@@ -26,6 +26,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -313,8 +314,7 @@ extension MapViewController: MKMapViewDelegate {
         // Get coordinates from annotation and pass it to next viewController
         vc.locationCoordinates = view.annotation?.coordinate
         if let vcCity = view.annotation?.title!, let vcCountry = view.annotation?.subtitle! {
-            vc.title = vcCity
-            vc.locationName = vcCity
+            vc.locationCity = vcCity
             vc.locationCountry = vcCountry
         }
 
