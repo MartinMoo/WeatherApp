@@ -65,7 +65,7 @@ class DetailViewTableHead: UIView {
     }
  
     //MARK: - Implementation
-    fileprivate func setupView() {
+    private func setupView() {
 
         // Add subviews
         addSubview(cellView)

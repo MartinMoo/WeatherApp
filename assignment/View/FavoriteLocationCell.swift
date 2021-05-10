@@ -118,7 +118,7 @@ class FavoriteLocationCell: UICollectionViewCell {
     }
     
     //MARK: - Implementation
-    fileprivate func setupCellView() {
+    private func setupCellView() {
         contentView.backgroundColor = .secondarySystemBackground
         
         contentView.addSubview(viewToBlur)
@@ -169,7 +169,7 @@ class FavoriteLocationCell: UICollectionViewCell {
     }
     
     // Zoom map view to specified coordinates
-    fileprivate func zoomToLocation(centerCooridnate location: CLLocationCoordinate2D, zoomInKm radius: CLLocationDistance) {
+    private func zoomToLocation(centerCooridnate location: CLLocationCoordinate2D, zoomInKm radius: CLLocationDistance) {
         let span = radius * 2000
         let region: MKCoordinateRegion = MKCoordinateRegion(center: location, latitudinalMeters: span, longitudinalMeters: span)
         mapView.setRegion(region, animated: false)

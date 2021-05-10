@@ -119,7 +119,7 @@ class DetailViewTableCell: UITableViewCell {
     }
     
     //MARK: - Implementation
-    fileprivate func setupCellView() {
+    private func setupCellView() {
         
         // Add subviews
         addSubview(cellView)

@@ -58,11 +58,6 @@ class FavoritesViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(contextObjectsDidChange(_:)), name: Notification.Name.NSManagedObjectContextObjectsDidChange, object: nil)
     }
     
-    fileprivate func setupUI() {
-        
-    }
-
-    
     // Reload CollectionView with updated data from CoreData
     @objc func contextObjectsDidChange(_ notification: Notification) {
         locations = CoreDataManager.shared.fetchLocationList()

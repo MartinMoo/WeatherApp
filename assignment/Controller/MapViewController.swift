@@ -26,7 +26,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -80,7 +80,7 @@ class MapViewController: UIViewController {
         
         let currentPositionButton: UIButton = {
             let button = UIButton()
-            button.setImage(UIImage(systemName: "location")?.withTintColor(UIColor.Custom.purple!, renderingMode: .alwaysOriginal), for: .normal)
+            button.setImage(UIImage(systemName: "location")?.withTintColor(UIColor.Custom.purple ?? UIColor.systemPink, renderingMode: .alwaysOriginal), for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(didTapLocationAction), for: .touchDown)
             return button
@@ -149,7 +149,7 @@ class MapViewController: UIViewController {
     }
     
     // Show info for no connection
-    fileprivate func showNoConnectionInfo() {
+    private func showNoConnectionInfo() {
         noConnectionLabel.isHidden = false
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {
@@ -163,7 +163,7 @@ class MapViewController: UIViewController {
     
     //MARK: - Button Actions Methods
     // Switch map style
-    @objc fileprivate func segmentedControlAction(sender: UISegmentedControl) {
+    @objc private func segmentedControlAction(sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
         case 0:
             currentMapType = .standard
@@ -175,7 +175,7 @@ class MapViewController: UIViewController {
     }
     
     // Animate Center to User location button and call zoom to location method
-    @objc fileprivate func didTapLocationAction(sender: UIButton) {
+    @objc private func didTapLocationAction(sender: UIButton) {
         
         // Check if Location Service is authorized
         switch CLLocationManager.authorizationStatus() {
@@ -197,7 +197,7 @@ class MapViewController: UIViewController {
         }
     }
     
-    @objc fileprivate func didAddAnnotation(sender: UILongPressGestureRecognizer) {
+    @objc private func didAddAnnotation(sender: UILongPressGestureRecognizer) {
         if sender.state != UIGestureRecognizer.State.began {
             return
         }
@@ -214,12 +214,12 @@ class MapViewController: UIViewController {
     
     //MARK: - Map Methods
     // Zoom to user location
-    fileprivate func centerToUserLocation() {
+    private func centerToUserLocation() {
         let mapRegion = MKCoordinateRegion(center: mapView.userLocation.coordinate, latitudinalMeters: zoomLevel, longitudinalMeters: zoomLevel)
         mapView.setRegion(mapRegion, animated: true)
     }
     
-    fileprivate func presentLocationPermissionAlert() {
+    private func presentLocationPermissionAlert() {
         // Alert for denied location permision
         let locationAlert: UIAlertController = {
             let alertController = UIAlertController(title: Localize.Alert.Location.Title, message: Localize.Alert.Location.Message, preferredStyle: .alert)
@@ -240,7 +240,7 @@ class MapViewController: UIViewController {
     }
     
     // Add Favorite locations to map
-    fileprivate func populateMapWithAnnotation() {
+    private func populateMapWithAnnotation() {
         // Clear old annotations
         let annotations = mapView.annotations
         mapView.removeAnnotations(annotations)
@@ -254,7 +254,7 @@ class MapViewController: UIViewController {
         }
     }
     
-    fileprivate func createAnnotation(cityFromCoreData: String? = nil, countryFromCoreData: String? = nil, latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
+    private func createAnnotation(cityFromCoreData: String? = nil, countryFromCoreData: String? = nil, latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> MKPointAnnotation {
         // Convert location co CLLocationCoordinate2D
         let locationCoordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         let locationForCity = CLLocation(latitude: latitude, longitude: longitude)

@@ -34,7 +34,7 @@ class SearchViewController: UITableViewController {
     }
     
     //MARK: - Methods for UI
-    fileprivate func setupSearchController() {
+    private func setupSearchController() {
         // No connection Info label
         noConnectionLabel.textColor = UIColor.Custom.red
         noConnectionLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
@@ -76,7 +76,7 @@ class SearchViewController: UITableViewController {
     }
     
     // Show info for no connection
-    fileprivate func showNoConnectionInfo() {
+    private func showNoConnectionInfo() {
         noConnectionLabel.isHidden = false
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn) {

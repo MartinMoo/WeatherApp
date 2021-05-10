@@ -9,12 +9,12 @@ import UIKit
 
 extension UIColor {
     struct Custom {
-        static let black = UIColor(named: "black")
-        static let blue = UIColor(named: "blue")
-        static let gray = UIColor(named: "gray")
-        static let purple = UIColor(named: "purple")
-        static let red = UIColor(named: "red")
-        static let white = UIColor(named: "white")
+        static let black = UIColor(named: "Black")
+        static let blue = UIColor(named: "Blue")
+        static let gray = UIColor(named: "Gray")
+        static let purple = UIColor(named: "Purple")
+        static let red = UIColor(named: "Red")
+        static let white = UIColor(named: "White")
     }
 }
 
